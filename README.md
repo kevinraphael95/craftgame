@@ -1,1 +1,1 @@
-https://kevinraphael95.github.io/craftgame/
+https://kevinraphael95.github.io/craftgame/index.html
