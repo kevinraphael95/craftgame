@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Quantum Craft</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- BACKGROUND DÉCOR -->
+  <div id="bg" aria-hidden="true">
+    <div class="nebula n1"></div>
+    <div class="nebula n2"></div>
+    <div class="nebula n3"></div>
+    <div class="grid-lines"></div>
+  </div>
+
+  <!-- BARRE DE PROGRESSION -->
+  <div class="prog-bar" id="prog-bar" style="width:0%" aria-hidden="true"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="logo-mark" aria-hidden="true">⚛</div>
+      <div class="logo-info">
+        <div class="logo-text">QUANTUM CRAFT</div>
+        <div class="logo-sub">DES QUARKS À L'UNIVERS</div>
+      </div>
+    </div>
+    <div class="hstats">
+      <div class="badge" title="Éléments découverts / total">
+        <span id="nd">10</span><span class="badge-sep">/</span><span id="nt">?</span>
+      </div>
+      <div class="badge badge-fusions">
+        ⚡ <span id="fc">0</span>
+      </div>
+      <button class="btn-rst" onclick="resetGame()" title="Réinitialiser la partie" aria-label="Réinitialiser">↺</button>
+    </div>
+  </header>
+
+  <!-- ZONE FUSION -->
+  <section class="fusion-zone" aria-label="Zone de fusion">
+    <div class="slot" id="slot-a" aria-label="Slot 1">
+      <span class="slot-ph" aria-hidden="true">SLOT 1</span>
+      <span class="slot-emoji" id="sa-emoji" aria-hidden="true"></span>
+      <span class="slot-name" id="sa-name"></span>
+      <button class="remove-slot" onclick="clearSlot('a')" aria-label="Vider le slot 1">✕</button>
+    </div>
+
+    <div class="plus-sign" aria-hidden="true">+</div>
+
+    <div class="slot" id="slot-b" aria-label="Slot 2">
+      <span class="slot-ph" aria-hidden="true">SLOT 2</span>
+      <span class="slot-emoji" id="sb-emoji" aria-hidden="true"></span>
+      <span class="slot-name" id="sb-name"></span>
+      <button class="remove-slot" onclick="clearSlot('b')" aria-label="Vider le slot 2">✕</button>
+    </div>
+
+    <button class="btn-fuse" id="btn-fuse" onclick="doFuse()" disabled aria-label="Lancer la fusion">
+      <span class="fuse-icon" aria-hidden="true">⚡</span>
+      <span class="fuse-label">FUSE</span>
+    </button>
+  </section>
+
+  <!-- INVENTAIRE HEADER -->
+  <div class="grid-header">
+    <div class="grid-title">INVENTAIRE</div>
+    <div class="search-wrap">
+      <span class="search-ico" aria-hidden="true">🔍</span>
+      <input
+        type="text"
+        id="srch"
+        placeholder="Chercher…"
+        oninput="renderGrid()"
+        aria-label="Rechercher un élément"
+        autocomplete="off"
+        spellcheck="false"
+      >
+    </div>
+  </div>
+
+  <!-- FILTRES -->
+  <nav class="filters" id="filters" aria-label="Filtres par catégorie">
+    <button class="filt on"  data-f="all"      onclick="setFilt(this)">TOUT</button>
+    <button class="filt"     data-f="quark"     onclick="setFilt(this)">QUARKS</button>
+    <button class="filt"     data-f="lepton"    onclick="setFilt(this)">LEPTONS</button>
+    <button class="filt"     data-f="boson"     onclick="setFilt(this)">BOSONS</button>
+    <button class="filt"     data-f="hadron"    onclick="setFilt(this)">HADRONS</button>
+    <button class="filt"     data-f="nucleus"   onclick="setFilt(this)">NOYAUX</button>
+    <button class="filt"     data-f="atom"      onclick="setFilt(this)">ATOMES</button>
+    <button class="filt"     data-f="molecule"  onclick="setFilt(this)">MOLÉCULES</button>
+    <button class="filt"     data-f="phase"     onclick="setFilt(this)">PHASES</button>
+    <button class="filt"     data-f="stellar"   onclick="setFilt(this)">STELLAIRE</button>
+    <button class="filt"     data-f="cosmic"    onclick="setFilt(this)">COSMIQUE</button>
+  </nav>
+
+  <!-- GRILLE DES ÉLÉMENTS -->
+  <main class="el-grid" id="el-grid" aria-label="Éléments découverts" role="list"></main>
+
+  <!-- HINT BAR -->
+  <div class="hint-bar" aria-hidden="true">
+    Sélectionne 2 éléments → <span class="hint-hl">⚡ FUSE</span>
+  </div>
+
+  <!-- MODAL RÉSULTAT -->
+  <div class="modal-bg" id="modal" role="dialog" aria-modal="true" aria-labelledby="m-name" aria-hidden="true">
+    <div class="modal">
+      <div class="modal-glow" aria-hidden="true"></div>
+      <span class="modal-big" id="m-emoji" aria-hidden="true"></span>
+      <h2 class="modal-title" id="m-name"></h2>
+      <div class="modal-cat" id="m-cat"></div>
+      <div class="modal-eq" id="m-eq"></div>
+      <p class="modal-desc" id="m-desc"></p>
+      <button class="modal-btn" onclick="closeModal()">CONTINUER ⟶</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="craftgame.js"></script>
+</body>
+</html>
