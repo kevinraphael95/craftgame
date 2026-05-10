@@ -205,7 +205,7 @@ function makeDraggable(el, cardId) {
 
     // Détecter survol de la sidebar
     const sr = sidebar.getBoundingClientRect();
-    dragOverSidebar = (cx < sr.right && cx > sr.left);
+    dragOverSidebar = window.innerWidth <= 680 ? cy > sr.top : (cx < sr.right && cx > sr.left);
     el.classList.toggle("drag-to-delete", dragOverSidebar);
   };
 
@@ -219,7 +219,8 @@ function makeDraggable(el, cardId) {
 
     // Drop sur la sidebar = suppression
     const sr = sidebar.getBoundingClientRect();
-    if (cx < sr.right) {
+    const onSidebar = window.innerWidth <= 680 ? cy > sr.top : cx < sr.right;
+    if (onSidebar) {
       flashRemove(cardId);
       return;
     }
@@ -485,22 +486,55 @@ function initQuantumBg() {
   const bg = document.getElementById("quantum-bg");
   if (!bg) return;
 
-  function spawnFluctuation() {
-    const w = bg.offsetWidth, h = bg.offsetHeight;
+  const canvas = document.createElement("canvas");
+  canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;";
+  bg.appendChild(canvas);
+  const ctx = canvas.getContext("2d");
+
+  let W, H, t = 0;
+  const COLS = 28, ROWS = 22, AMP = 5, FREQ = 0.18, SPEED = 0.018;
+
+  function resize() {
+    W = canvas.width  = bg.offsetWidth;
+    H = canvas.height = bg.offsetHeight;
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  const isDark = () => document.body.classList.contains("dark");
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const cw = W / COLS, ch = H / ROWS;
+    ctx.fillStyle = isDark() ? "rgba(99,120,248,0.45)" : "rgba(91,69,214,0.22)";
+    for (let r = 0; r <= ROWS; r++) {
+      for (let c = 0; c <= COLS; c++) {
+        const wave = Math.sin(c * FREQ + r * FREQ * 0.7 + t) * AMP
+                   + Math.sin(c * FREQ * 0.5 - r * FREQ * 1.2 + t * 0.8) * AMP * 0.5;
+        const x = c * cw + wave;
+        const y = r * ch + wave * 0.6;
+        ctx.beginPath();
+        ctx.arc(x, y, isDark() ? 1.2 : 0.9, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    t += SPEED;
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  const QP_SYMBOLS = ["ψ","φ","Ω","∇","∂","ħ","∞","⊗","⊕","Λ","γ","β","α","π","ν","μ","τ","σ","ρ","δ","ε","ζ","η","θ","κ","λ","ξ","χ"];
+  setInterval(() => {
     const sym = document.createElement("span");
     sym.className = "qfluc";
     sym.textContent = QP_SYMBOLS[Math.floor(Math.random() * QP_SYMBOLS.length)];
-    sym.style.left    = (Math.random() * w) + "px";
-    sym.style.top     = (Math.random() * h) + "px";
-    sym.style.fontSize= (10 + Math.random() * 18) + "px";
+    sym.style.left = (Math.random() * bg.offsetWidth) + "px";
+    sym.style.top  = (Math.random() * bg.offsetHeight) + "px";
+    sym.style.fontSize = (10 + Math.random() * 18) + "px";
     sym.style.animationDuration = (.8 + Math.random() * 1.4) + "s";
-    sym.style.animationDelay   = "0s";
     bg.appendChild(sym);
     setTimeout(() => sym.remove(), 2500);
-  }
-
-  // Lancer des fluctuations en continu
-  setInterval(spawnFluctuation, 120);
+  }, 120);
 }
 
 // ============================================================
@@ -508,6 +542,19 @@ function initQuantumBg() {
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
   init();
-  initCanvasDrop();
-  initQuantumBg();
-});
+    initCanvasDrop();
+    initQuantumBg();
+  
+    document.getElementById("theme-btn").addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      const dark = document.body.classList.contains("dark");
+      document.getElementById("theme-btn").textContent = dark ? "☀️" : "🌙";
+      try { localStorage.setItem("qc3_theme", dark ? "dark" : "light"); } catch(e){}
+    });
+    try {
+      if (localStorage.getItem("qc3_theme") === "dark") {
+        document.body.classList.add("dark");
+        document.getElementById("theme-btn").textContent = "☀️";
+      }
+    } catch(e) {}
+  });
