@@ -160,7 +160,7 @@ body.dark .qfluc {
   display: flex; align-items: center; gap: 10px;
   margin-bottom: 9px;
 }
-.logo-icon { font-size: 1.6rem; line-height: 1; }
+.logo-icon { font-size: 2.2rem; line-height: 1; }
 .logo strong { display: block; font-size: 1.1rem; font-weight: 900; color: var(--text); }
 .logo em { display: block; font-size: .7rem; font-style: normal; color: var(--muted); margin-top: 1px; text-transform: uppercase; letter-spacing: .07em; }
 .logo-right { margin-left: auto; }
