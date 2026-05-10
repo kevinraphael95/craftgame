@@ -523,7 +523,6 @@ function initQuantumBg() {
   }
   draw();
 
-  const QP_SYMBOLS = ["ψ","φ","Ω","∇","∂","ħ","∞","⊗","⊕","Λ","γ","β","α","π","ν","μ","τ","σ","ρ","δ","ε","ζ","η","θ","κ","λ","ξ","χ"];
   setInterval(() => {
     const sym = document.createElement("span");
     sym.className = "qfluc";
@@ -557,4 +556,5 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("theme-btn").textContent = "☀️";
       }
     } catch(e) {}
+  document.addEventListener("contextmenu", ev => ev.preventDefault());
   });
