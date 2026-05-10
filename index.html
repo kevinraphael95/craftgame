@@ -2,28 +2,30 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRAFT GAME</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Quantum Craft</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<!-- Fond quantique -->
+<div id="quantum-bg"></div>
 
 <aside id="sidebar">
   <div class="sb-header">
     <div class="logo">
       <span>⚛️</span>
       <div>
-        <strong>CRAFT GAME</strong>
-        <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
+        <strong>Quantum Craft</strong>
+        <em>Forge l'univers depuis ses quarks</em>
       </div>
     </div>
     <div class="sb-stats">
-      <b id="nd">10</b> / <b id="nt">?</b> éléments &nbsp;·&nbsp; <b id="fc">0</b> fusions
+      <b id="nd">11</b> / <b id="nt">?</b> éléments &nbsp;·&nbsp; <b id="fc">0</b> fusions
     </div>
     <div class="sb-progress"><div id="prog-bar"></div></div>
     <div class="sb-search">
-      <span>🔍</span>
+      <span>⌕</span>
       <input id="srch" type="text" placeholder="Rechercher..." oninput="renderSidebar()" autocomplete="off">
     </div>
     <div class="sb-filters">
@@ -40,8 +42,11 @@
       <button class="filt"    data-f="cosmic"    onclick="setFilt(this)">Cosmique</button>
     </div>
   </div>
+
   <div id="el-list"></div>
+
   <div class="sb-footer">
+    <button class="clear-btn" onclick="clearCanvas()">⊘ Vider</button>
     <button onclick="resetGame()">↺ Réinitialiser</button>
   </div>
 </aside>
@@ -50,14 +55,21 @@
   <div id="canvas-area">
     <div id="canvas-hint">
       <div class="ch-icon">⚗️</div>
-      <p>Clique sur un élément pour le poser<br>Glisse-le sur un autre pour fusionner<br>3 éléments ensemble = réaction à 3 corps</p>
+      <p>
+        Clique sur un élément pour le poser<br>
+        Glisse-le sur un autre pour fusionner<br>
+        Double-clic pour dupliquer<br>
+        Clic droit ou glisser vers ← pour supprimer<br>
+        <span style="color:#f87171;font-size:.7em">Particule + antiparticule = ANNIHILATION</span>
+      </p>
     </div>
   </div>
 </main>
 
+<!-- Modal découverte -->
 <div id="modal" onclick="closeModal()">
   <div id="modal-box" onclick="event.stopPropagation()">
-    <div id="modal-new-badge">✨ Nouveau !</div>
+    <div id="modal-new-badge">✦ Nouveau !</div>
     <div id="m-emoji"></div>
     <h2 id="m-name"></h2>
     <div id="m-cat"></div>
@@ -69,6 +81,7 @@
 
 <div id="toast"></div>
 
+<script src="data.js"></script>
 <script src="craftgame.js"></script>
 </body>
 </html>
