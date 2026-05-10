@@ -3,21 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRAFT GAME</title>
+<title>QUANTUM CRAFT</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- SIDEBAR GAUCHE : inventaire scrollable -->
 <aside id="sidebar">
-
   <div class="sb-header">
     <div class="logo">
       <span>⚛️</span>
       <div>
-        <strong>CRAFT GAME</strong>
-        <em>Crafter des trucs avec des trucs</em>
+        <strong>QUANTUM CRAFT</strong>
+        <em>Glisse les éléments pour les fusionner</em>
       </div>
     </div>
     <div class="sb-stats">
@@ -28,7 +26,7 @@
       <span>🔍</span>
       <input id="srch" type="text" placeholder="Rechercher..." oninput="renderSidebar()" autocomplete="off">
     </div>
-    <div class="sb-filters" id="filters">
+    <div class="sb-filters">
       <button class="filt on" data-f="all"      onclick="setFilt(this)">Tout</button>
       <button class="filt"    data-f="quark"     onclick="setFilt(this)">Quarks</button>
       <button class="filt"    data-f="lepton"    onclick="setFilt(this)">Leptons</button>
@@ -42,57 +40,21 @@
       <button class="filt"    data-f="cosmic"    onclick="setFilt(this)">Cosmique</button>
     </div>
   </div>
-
-  <!-- Liste des éléments découverts -->
   <div id="el-list"></div>
-
   <div class="sb-footer">
     <button onclick="resetGame()">↺ Réinitialiser</button>
   </div>
-
 </aside>
 
-<!-- CANVAS DROIT : zone de jeu -->
 <main id="canvas">
-
-  <!-- Hint quand le canvas est vide -->
-  <div id="canvas-hint">
-    <div class="ch-icon">⚗️</div>
-    <p>Clique sur deux éléments<br>pour les fusionner</p>
-  </div>
-
-  <!-- Barre de fusion fixée en bas -->
-  <div id="fusion-bar">
-
-    <div class="fslot" id="slot-a">
-      <div class="fslot-empty" id="sa-empty">Slot 1</div>
-      <div class="fslot-content" id="sa-content" style="display:none">
-        <span id="sa-emoji"></span>
-        <span id="sa-name"></span>
-        <button onclick="clearSlot('a')">✕</button>
-      </div>
+  <div id="canvas-area">
+    <div id="canvas-hint">
+      <div class="ch-icon">⚗️</div>
+      <p>Clique sur un élément pour le poser<br>Glisse-le sur un autre pour fusionner<br>3 éléments ensemble = réaction à 3 corps</p>
     </div>
-
-    <div class="fbar-center">
-      <div class="fbar-plus">+</div>
-      <button id="btn-fuse" onclick="doFuse()" disabled>
-        <span>⚡</span> Fusionner
-      </button>
-    </div>
-
-    <div class="fslot" id="slot-b">
-      <div class="fslot-empty" id="sb-empty">Slot 2</div>
-      <div class="fslot-content" id="sb-content" style="display:none">
-        <span id="sb-emoji"></span>
-        <span id="sb-name"></span>
-        <button onclick="clearSlot('b')">✕</button>
-      </div>
-    </div>
-
   </div>
 </main>
 
-<!-- MODAL nouvelle découverte -->
 <div id="modal" onclick="closeModal()">
   <div id="modal-box" onclick="event.stopPropagation()">
     <div id="modal-new-badge">✨ Nouveau !</div>
@@ -105,7 +67,6 @@
   </div>
 </div>
 
-<!-- TOAST erreur / info -->
 <div id="toast"></div>
 
 <script src="craftgame.js"></script>
