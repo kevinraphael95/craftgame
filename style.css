@@ -22,8 +22,8 @@
   --sidebar-bg:  #ffffff;
   --border:      #e0ddd6;
   --border2:     #ccc9c0;
-  --text:        #2d2a24;
-  --muted:       #9c9789;
+  --text:        #0a0905;
+  --muted:       #5a5650;
   --accent:      #5b45d6;
   --accent2:     #7c6af0;
   --glow:        rgba(91,69,214,.22);
@@ -178,7 +178,7 @@ body.dark .qfluc {
 }
 #theme-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-.sb-stats { font-size: .68rem; color: var(--muted); margin-bottom: 7px; font-family: var(--mono); }
+.sb-stats { font-size: .78rem; color: var(--text); margin-bottom: 7px; font-family: var(--mono); }
 .sb-stats b { color: var(--text); font-weight: 800; }
 
 .sb-progress {
@@ -251,7 +251,7 @@ body.dark .qfluc {
 .el-chip[data-cat=cosmic]   { background: var(--c-cosmic);   border-color: var(--cb-cosmic); }
 
 .chip-emoji { font-size: 1rem; line-height: 1; flex-shrink: 0; width: 20px; text-align: center; }
-.chip-name  { font-size: .75rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chip-name  { font-size: .85rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .chip-new   { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 5px #22c55e; }
 
 /* ============================================================
@@ -349,7 +349,7 @@ body.dark .qfluc {
 .canvas-card[data-cat=cosmic]   { border-left: 2.5px solid var(--cb-cosmic); }
 
 .cc-emoji { font-size: 1.15rem; line-height: 1; flex-shrink: 0; }
-.cc-name  { font-size: .73rem; font-weight: 800; color: var(--text); overflow: hidden; text-overflow: ellipsis; flex: 1; }
+.cc-name  { font-size: .82rem; font-weight: 800; color: var(--text); overflow: hidden; text-overflow: ellipsis; flex: 1; }
 
 /* ============================================================
    ANNIHILATION FX
