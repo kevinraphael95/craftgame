@@ -7,25 +7,20 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<!-- Fond quantique -->
 <div id="quantum-bg"></div>
 
+<!-- DESKTOP sidebar gauche -->
 <aside id="sidebar">
   <div class="sb-header">
     <div class="logo">
-      <span style="font-size:2rem">⚗️</span>
+      <span style="font-size:1.6rem">⚗️</span>
       <div>
         <strong>CRAFT GAME</strong>
-                <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
-              </div>
-              <div class="logo-right">
-                <button id="theme-btn">🌙</button>
-              </div>
-            </div>
-    <div class="sb-stats">
-      <b id="nd">11</b> / <b id="nt">?</b> éléments &nbsp;·&nbsp; <b id="fc">0</b> fusions
+        <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
+      </div>
+      <div class="logo-right"><button id="theme-btn">🌙</button></div>
     </div>
+    <div class="sb-stats"><b id="nd">11</b> / <b id="nt">?</b> éléments &nbsp;·&nbsp; <b id="fc">0</b> fusions</div>
     <div class="sb-progress"><div id="prog-bar"></div></div>
     <div class="sb-search">
       <span>⌕</span>
@@ -45,31 +40,66 @@
       <button class="filt"    data-f="cosmic"    onclick="setFilt(this)">Cosmique</button>
     </div>
   </div>
-
   <div id="el-list"></div>
-
   <div class="sb-footer">
     <button class="clear-btn" onclick="clearCanvas()">⊘ Vider</button>
     <button onclick="resetGame()">↺ Réinitialiser</button>
   </div>
 </aside>
 
+<!-- CANVAS -->
 <main id="canvas">
+  <!-- topbar mobile uniquement -->
+  <div id="mobile-topbar">
+    <span class="mob-logo">⚗️ CRAFT GAME</span>
+    <div class="mob-actions">
+      <div class="mob-search-wrap">
+        <span>⌕</span>
+        <input id="srch-mob" type="text" placeholder="Rechercher…" autocomplete="off"
+               oninput="document.getElementById('srch').value=this.value;renderSidebar()">
+      </div>
+      <button onclick="clearCanvas()" title="Vider">🧹</button>
+      <button onclick="resetGame()" title="Réinitialiser">↺</button>
+      <button id="theme-btn-mob" title="Thème">🌙</button>
+    </div>
+  </div>
+
   <div id="canvas-area">
     <div id="canvas-hint">
       <div class="ch-icon">⚗️</div>
       <p>
         Clique sur un élément pour le poser<br>
         Glisse-le sur un autre pour fusionner<br>
-        Double-clic pour dupliquer<br>
-        Clic droit ou glisser vers ← pour supprimer<br>
-        <span style="color:#f87171;font-size:.7em">Particule + antiparticule = ANNIHILATION</span>
+        Double-clic pour dupliquer · Clic droit pour supprimer<br>
+        <span style="color:#f87171;font-size:.7em">Particule + antiparticule = ANNIHILATION 💥</span>
       </p>
     </div>
   </div>
 </main>
 
-<!-- Modal découverte -->
+<!-- panel bas mobile uniquement -->
+<div id="mobile-panel">
+  <div id="mob-filters">
+    <button class="filt on" data-f="all"      onclick="mobFilt(this)">Tout</button>
+    <button class="filt"    data-f="quark"     onclick="mobFilt(this)">Quarks</button>
+    <button class="filt"    data-f="lepton"    onclick="mobFilt(this)">Leptons</button>
+    <button class="filt"    data-f="boson"     onclick="mobFilt(this)">Bosons</button>
+    <button class="filt"    data-f="hadron"    onclick="mobFilt(this)">Hadrons</button>
+    <button class="filt"    data-f="nucleus"   onclick="mobFilt(this)">Noyaux</button>
+    <button class="filt"    data-f="atom"      onclick="mobFilt(this)">Atomes</button>
+    <button class="filt"    data-f="molecule"  onclick="mobFilt(this)">Molécules</button>
+    <button class="filt"    data-f="phase"     onclick="mobFilt(this)">Phases</button>
+    <button class="filt"    data-f="stellar"   onclick="mobFilt(this)">Stellaire</button>
+    <button class="filt"    data-f="cosmic"    onclick="mobFilt(this)">Cosmique</button>
+  </div>
+  <div id="el-list-mob"></div>
+  <div class="mob-stats">
+    <b id="nd-mob">11</b>/<b id="nt-mob">?</b> &nbsp;·&nbsp; <b id="fc-mob">0</b> fusions
+    <div class="sb-progress"><div id="prog-bar-mob"></div></div>
+  </div>
+</div>
+
+<!-- Modal -->
 <div id="modal" onclick="closeModal()">
   <div id="modal-box" onclick="event.stopPropagation()">
     <div id="modal-new-badge">✦ Nouveau !</div>
@@ -81,10 +111,65 @@
     <button onclick="closeModal()">Continuer →</button>
   </div>
 </div>
-
 <div id="toast"></div>
 
 <script src="data.js"></script>
 <script src="craftgame.js"></script>
+<script>
+// ---- MOBILE GLUE ----
+
+// Theme sync
+const themeBtnMob = document.getElementById('theme-btn-mob');
+const themeBtnDesk = document.getElementById('theme-btn');
+themeBtnMob.addEventListener('click', () => {
+  themeBtnDesk.click();
+  themeBtnMob.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+});
+// Restore saved theme icon
+try {
+  if (localStorage.getItem('qc3_theme') === 'dark') themeBtnMob.textContent = '☀️';
+} catch(e) {}
+
+// Filter sync mobile → desktop
+function mobFilt(btn) {
+  // sync desktop filter
+  document.querySelectorAll('#sidebar .filt').forEach(b => {
+    b.classList.toggle('on', b.dataset.f === btn.dataset.f);
+  });
+  document.querySelectorAll('#mob-filters .filt').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  activeFilt = btn.dataset.f;
+  syncMobList();
+}
+
+// Populate mobile list from discovered set
+function syncMobList() {
+  const src = document.getElementById('el-list');
+  const dst = document.getElementById('el-list-mob');
+  dst.innerHTML = src.innerHTML;
+  dst.querySelectorAll('.el-chip').forEach(chip => {
+    // remove drag (useless on mobile list-mob)
+    chip.draggable = false;
+    chip.addEventListener('click', () => spawnCard(chip.dataset.name));
+  });
+}
+
+// Patch renderSidebar to also update mobile list
+const _origRender = window.renderSidebar;
+window.renderSidebar = function() {
+  _origRender();
+  syncMobList();
+};
+
+// Patch updateStats to also update mobile stats
+const _origStats = window.updateStats;
+window.updateStats = function() {
+  _origStats();
+  document.getElementById('nd-mob').textContent  = document.getElementById('nd').textContent;
+  document.getElementById('nt-mob').textContent  = document.getElementById('nt').textContent;
+  document.getElementById('fc-mob').textContent  = document.getElementById('fc').textContent;
+  document.getElementById('prog-bar-mob').style.width = document.getElementById('prog-bar').style.width;
+};
+</script>
 </body>
 </html>
