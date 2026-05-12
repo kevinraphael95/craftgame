@@ -7,47 +7,56 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <!-- Fond quantique -->
 <div id="quantum-bg"></div>
-
 <aside id="sidebar">
   <div class="sb-header">
     <div class="logo">
-      <span style="font-size:2rem">⚗️</span>
+      <span style="font-size:1.6rem">⚗️</span>
       <div>
         <strong>CRAFT GAME</strong>
-                <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
-              </div>
-              <div class="logo-right">
-                <button id="theme-btn">🌙</button>
-              </div>
-            </div>
+        <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
+      </div>
+      <div class="logo-right">
+        <button id="theme-btn">🌙</button>
+      </div>
+    </div>
     <div class="sb-stats">
       <b id="nd">11</b> / <b id="nt">?</b> éléments &nbsp;·&nbsp; <b id="fc">0</b> fusions
     </div>
     <div class="sb-progress"><div id="prog-bar"></div></div>
+  </div>
+
+  <!-- Ligne recherche + boutons (mobile) -->
+  <div class="sb-search-row">
     <div class="sb-search">
       <span>⌕</span>
       <input id="srch" type="text" placeholder="Rechercher..." oninput="renderSidebar()" autocomplete="off">
     </div>
-    <div class="sb-filters">
-      <button class="filt on" data-f="all"      onclick="setFilt(this)">Tout</button>
-      <button class="filt"    data-f="quark"     onclick="setFilt(this)">Quarks</button>
-      <button class="filt"    data-f="lepton"    onclick="setFilt(this)">Leptons</button>
-      <button class="filt"    data-f="boson"     onclick="setFilt(this)">Bosons</button>
-      <button class="filt"    data-f="hadron"    onclick="setFilt(this)">Hadrons</button>
-      <button class="filt"    data-f="nucleus"   onclick="setFilt(this)">Noyaux</button>
-      <button class="filt"    data-f="atom"      onclick="setFilt(this)">Atomes</button>
-      <button class="filt"    data-f="molecule"  onclick="setFilt(this)">Molécules</button>
-      <button class="filt"    data-f="phase"     onclick="setFilt(this)">Phases</button>
-      <button class="filt"    data-f="stellar"   onclick="setFilt(this)">Stellaire</button>
-      <button class="filt"    data-f="cosmic"    onclick="setFilt(this)">Cosmique</button>
+    <div class="sb-footer-inline">
+      <button class="clear-btn" onclick="clearCanvas()">⊘</button>
+      <button onclick="resetGame()">↺</button>
     </div>
+  </div>
+
+  <!-- Filtres scrollables -->
+  <div class="sb-filters">
+    <button class="filt on" data-f="all"      onclick="setFilt(this)">Tout</button>
+    <button class="filt"    data-f="quark"     onclick="setFilt(this)">Quarks</button>
+    <button class="filt"    data-f="lepton"    onclick="setFilt(this)">Leptons</button>
+    <button class="filt"    data-f="boson"     onclick="setFilt(this)">Bosons</button>
+    <button class="filt"    data-f="hadron"    onclick="setFilt(this)">Hadrons</button>
+    <button class="filt"    data-f="nucleus"   onclick="setFilt(this)">Noyaux</button>
+    <button class="filt"    data-f="atom"      onclick="setFilt(this)">Atomes</button>
+    <button class="filt"    data-f="molecule"  onclick="setFilt(this)">Molécules</button>
+    <button class="filt"    data-f="phase"     onclick="setFilt(this)">Phases</button>
+    <button class="filt"    data-f="stellar"   onclick="setFilt(this)">Stellaire</button>
+    <button class="filt"    data-f="cosmic"    onclick="setFilt(this)">Cosmique</button>
   </div>
 
   <div id="el-list"></div>
 
+  <!-- Footer desktop seulement -->
   <div class="sb-footer">
     <button class="clear-btn" onclick="clearCanvas()">⊘ Vider</button>
     <button onclick="resetGame()">↺ Réinitialiser</button>
@@ -81,8 +90,26 @@
     <button onclick="closeModal()">Continuer →</button>
   </div>
 </div>
-
 <div id="toast"></div>
+
+<script>
+// Calcul dynamique de la hauteur sidebar mobile pour ajuster le canvas
+function updateMobileLayout() {
+  if (window.innerWidth <= 680) {
+    const sb = document.getElementById('sidebar');
+    const h = sb.offsetHeight;
+    document.documentElement.style.setProperty('--mobile-sb-h', h + 'px');
+    const canvas = document.getElementById('canvas');
+    canvas.style.bottom = h + 'px';
+  } else {
+    document.documentElement.style.setProperty('--mobile-sb-h', '0px');
+    const canvas = document.getElementById('canvas');
+    canvas.style.bottom = '';
+  }
+}
+window.addEventListener('resize', updateMobileLayout);
+window.addEventListener('DOMContentLoaded', () => setTimeout(updateMobileLayout, 50));
+</script>
 
 <script src="data.js"></script>
 <script src="craftgame.js"></script>
