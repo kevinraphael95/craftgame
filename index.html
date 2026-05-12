@@ -7,61 +7,47 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- Topbar mobile (titre fixe en haut) -->
-<div id="mobile-topbar">
-  <span>⚗️</span>
-  <strong>CRAFT GAME</strong>
-  <div class="sb-stats"><b id="nd2">0</b> / <b id="nt2">?</b> · <b id="fc2">0</b> fusions</div>
-  <button id="theme-btn">🌙</button>
-</div>
+
+<!-- Fond quantique -->
+<div id="quantum-bg"></div>
+
 <aside id="sidebar">
   <div class="sb-header">
     <div class="logo">
-      <span style="font-size:1.6rem">⚗️</span>
+      <span style="font-size:2rem">⚗️</span>
       <div>
         <strong>CRAFT GAME</strong>
-        <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
-      </div>
-      <div class="logo-right">
-        <button id="theme-btn-desk">🌙</button>
-      </div>
-    </div>
+                <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
+              </div>
+              <div class="logo-right">
+                <button id="theme-btn">🌙</button>
+              </div>
+            </div>
     <div class="sb-stats">
       <b id="nd">11</b> / <b id="nt">?</b> éléments &nbsp;·&nbsp; <b id="fc">0</b> fusions
     </div>
     <div class="sb-progress"><div id="prog-bar"></div></div>
-  </div>
-
-  <!-- Ligne recherche + boutons (mobile) -->
-  <div class="sb-search-row">
     <div class="sb-search">
       <span>⌕</span>
       <input id="srch" type="text" placeholder="Rechercher..." oninput="renderSidebar()" autocomplete="off">
     </div>
-    <div class="sb-footer-inline">
-      <button class="clear-btn" onclick="clearCanvas()">⊘</button>
-      <button onclick="resetGame()">↺</button>
+    <div class="sb-filters">
+      <button class="filt on" data-f="all"      onclick="setFilt(this)">Tout</button>
+      <button class="filt"    data-f="quark"     onclick="setFilt(this)">Quarks</button>
+      <button class="filt"    data-f="lepton"    onclick="setFilt(this)">Leptons</button>
+      <button class="filt"    data-f="boson"     onclick="setFilt(this)">Bosons</button>
+      <button class="filt"    data-f="hadron"    onclick="setFilt(this)">Hadrons</button>
+      <button class="filt"    data-f="nucleus"   onclick="setFilt(this)">Noyaux</button>
+      <button class="filt"    data-f="atom"      onclick="setFilt(this)">Atomes</button>
+      <button class="filt"    data-f="molecule"  onclick="setFilt(this)">Molécules</button>
+      <button class="filt"    data-f="phase"     onclick="setFilt(this)">Phases</button>
+      <button class="filt"    data-f="stellar"   onclick="setFilt(this)">Stellaire</button>
+      <button class="filt"    data-f="cosmic"    onclick="setFilt(this)">Cosmique</button>
     </div>
-  </div>
-
-  <!-- Filtres scrollables -->
-  <div class="sb-filters">
-    <button class="filt on" data-f="all"      onclick="setFilt(this)">Tout</button>
-    <button class="filt"    data-f="quark"     onclick="setFilt(this)">Quarks</button>
-    <button class="filt"    data-f="lepton"    onclick="setFilt(this)">Leptons</button>
-    <button class="filt"    data-f="boson"     onclick="setFilt(this)">Bosons</button>
-    <button class="filt"    data-f="hadron"    onclick="setFilt(this)">Hadrons</button>
-    <button class="filt"    data-f="nucleus"   onclick="setFilt(this)">Noyaux</button>
-    <button class="filt"    data-f="atom"      onclick="setFilt(this)">Atomes</button>
-    <button class="filt"    data-f="molecule"  onclick="setFilt(this)">Molécules</button>
-    <button class="filt"    data-f="phase"     onclick="setFilt(this)">Phases</button>
-    <button class="filt"    data-f="stellar"   onclick="setFilt(this)">Stellaire</button>
-    <button class="filt"    data-f="cosmic"    onclick="setFilt(this)">Cosmique</button>
   </div>
 
   <div id="el-list"></div>
 
-  <!-- Footer desktop seulement -->
   <div class="sb-footer">
     <button class="clear-btn" onclick="clearCanvas()">⊘ Vider</button>
     <button onclick="resetGame()">↺ Réinitialiser</button>
@@ -95,58 +81,8 @@
     <button onclick="closeModal()">Continuer →</button>
   </div>
 </div>
+
 <div id="toast"></div>
-
-<script>
-function updateMobileLayout() {
-  if (window.innerWidth <= 680) {
-    const sb = document.getElementById('sidebar');
-    const h = sb.offsetHeight;
-    document.documentElement.style.setProperty('--mobile-sb-h', h + 'px');
-    document.getElementById('canvas').style.bottom = h + 'px';
-  } else {
-    document.getElementById('canvas').style.bottom = '';
-  }
-}
-window.addEventListener('resize', updateMobileLayout);
-window.addEventListener('DOMContentLoaded', () => setTimeout(updateMobileLayout, 50));
-
-// Synchro stats topbar mobile
-const _origUpdateStats = window.updateStats;
-function patchStats() {
-  const nd2 = document.getElementById('nd2');
-  const nt2 = document.getElementById('nt2');
-  const fc2 = document.getElementById('fc2');
-  if (!nd2) return;
-  const nd = document.getElementById('nd');
-  const nt = document.getElementById('nt');
-  const fc = document.getElementById('fc');
-  if (nd && nd2) nd2.textContent = nd.textContent;
-  if (nt && nt2) nt2.textContent = nt.textContent;
-  if (fc && fc2) fc2.textContent = fc.textContent;
-}
-setInterval(patchStats, 500);
-
-// Thème : deux boutons
-function applyTheme(dark) {
-  document.body.classList.toggle('dark', dark);
-  const icon = dark ? '☀️' : '🌙';
-  ['theme-btn','theme-btn-desk'].forEach(id => {
-    const b = document.getElementById(id);
-    if (b) b.textContent = icon;
-  });
-  try { localStorage.setItem('qc3_theme', dark ? 'dark' : 'light'); } catch(e){}
-}
-window.addEventListener('DOMContentLoaded', () => {
-  ['theme-btn','theme-btn-desk'].forEach(id => {
-    const b = document.getElementById(id);
-    if (b) b.addEventListener('click', () => applyTheme(!document.body.classList.contains('dark')));
-  });
-  try {
-    if (localStorage.getItem('qc3_theme') === 'dark') applyTheme(true);
-  } catch(e) {}
-});
-</script>
 
 <script src="data.js"></script>
 <script src="craftgame.js"></script>
