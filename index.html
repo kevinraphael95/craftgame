@@ -7,37 +7,30 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<!-- Fond quantique -->
 <div id="quantum-bg"></div>
 
 <aside id="sidebar">
-  <!-- TOPBAR : logo + stats + theme -->
-  <div class="sb-topbar">
-    <div class="logo-row">
-      <span class="logo-icon">⚗️</span>
-      <div class="logo-text">
+  <div class="sb-header">
+    <div class="logo">
+      <span style="font-size:2rem">⚗️</span>
+      <div>
         <strong>CRAFT GAME</strong>
-        <em>Crafter des trucs avec des trucs</em>
-      </div>
-      <button id="theme-btn" aria-label="Changer le thème">🌙</button>
-    </div>
+                <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
+              </div>
+              <div class="logo-right">
+                <button id="theme-btn">🌙</button>
+              </div>
+            </div>
     <div class="sb-stats">
       <b id="nd">11</b> / <b id="nt">?</b> éléments &nbsp;·&nbsp; <b id="fc">0</b> fusions
     </div>
     <div class="sb-progress"><div id="prog-bar"></div></div>
-  </div>
-
-  <!-- BARRE RECHERCHE + BOUTONS -->
-  <div class="sb-controls">
     <div class="sb-search">
       <span>⌕</span>
       <input id="srch" type="text" placeholder="Rechercher..." oninput="renderSidebar()" autocomplete="off">
     </div>
-    <button class="ctrl-btn clear-btn" onclick="clearCanvas()" title="Vider le canvas">⊘</button>
-    <button class="ctrl-btn reset-btn" onclick="resetGame()" title="Réinitialiser">↺</button>
-  </div>
-
-  <!-- FILTRES — scroll horizontal -->
-  <div class="sb-filters-wrap">
     <div class="sb-filters">
       <button class="filt on" data-f="all"      onclick="setFilt(this)">Tout</button>
       <button class="filt"    data-f="quark"     onclick="setFilt(this)">Quarks</button>
@@ -53,8 +46,12 @@
     </div>
   </div>
 
-  <!-- LISTE ÉLÉMENTS -->
   <div id="el-list"></div>
+
+  <div class="sb-footer">
+    <button class="clear-btn" onclick="clearCanvas()">⊘ Vider</button>
+    <button onclick="resetGame()">↺ Réinitialiser</button>
+  </div>
 </aside>
 
 <main id="canvas">
@@ -86,9 +83,6 @@
 </div>
 
 <div id="toast"></div>
-
-<!-- Ghost card pour preview du drag -->
-<div id="drag-ghost" style="display:none;"></div>
 
 <script src="data.js"></script>
 <script src="craftgame.js"></script>
