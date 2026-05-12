@@ -7,8 +7,13 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- Fond quantique -->
-<div id="quantum-bg"></div>
+<!-- Topbar mobile (titre fixe en haut) -->
+<div id="mobile-topbar">
+  <span>⚗️</span>
+  <strong>CRAFT GAME</strong>
+  <div class="sb-stats"><b id="nd2">0</b> / <b id="nt2">?</b> · <b id="fc2">0</b> fusions</div>
+  <button id="theme-btn">🌙</button>
+</div>
 <aside id="sidebar">
   <div class="sb-header">
     <div class="logo">
@@ -18,7 +23,7 @@
         <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
       </div>
       <div class="logo-right">
-        <button id="theme-btn">🌙</button>
+        <button id="theme-btn-desk">🌙</button>
       </div>
     </div>
     <div class="sb-stats">
@@ -93,22 +98,54 @@
 <div id="toast"></div>
 
 <script>
-// Calcul dynamique de la hauteur sidebar mobile pour ajuster le canvas
 function updateMobileLayout() {
   if (window.innerWidth <= 680) {
     const sb = document.getElementById('sidebar');
     const h = sb.offsetHeight;
     document.documentElement.style.setProperty('--mobile-sb-h', h + 'px');
-    const canvas = document.getElementById('canvas');
-    canvas.style.bottom = h + 'px';
+    document.getElementById('canvas').style.bottom = h + 'px';
   } else {
-    document.documentElement.style.setProperty('--mobile-sb-h', '0px');
-    const canvas = document.getElementById('canvas');
-    canvas.style.bottom = '';
+    document.getElementById('canvas').style.bottom = '';
   }
 }
 window.addEventListener('resize', updateMobileLayout);
 window.addEventListener('DOMContentLoaded', () => setTimeout(updateMobileLayout, 50));
+
+// Synchro stats topbar mobile
+const _origUpdateStats = window.updateStats;
+function patchStats() {
+  const nd2 = document.getElementById('nd2');
+  const nt2 = document.getElementById('nt2');
+  const fc2 = document.getElementById('fc2');
+  if (!nd2) return;
+  const nd = document.getElementById('nd');
+  const nt = document.getElementById('nt');
+  const fc = document.getElementById('fc');
+  if (nd && nd2) nd2.textContent = nd.textContent;
+  if (nt && nt2) nt2.textContent = nt.textContent;
+  if (fc && fc2) fc2.textContent = fc.textContent;
+}
+setInterval(patchStats, 500);
+
+// Thème : deux boutons
+function applyTheme(dark) {
+  document.body.classList.toggle('dark', dark);
+  const icon = dark ? '☀️' : '🌙';
+  ['theme-btn','theme-btn-desk'].forEach(id => {
+    const b = document.getElementById(id);
+    if (b) b.textContent = icon;
+  });
+  try { localStorage.setItem('qc3_theme', dark ? 'dark' : 'light'); } catch(e){}
+}
+window.addEventListener('DOMContentLoaded', () => {
+  ['theme-btn','theme-btn-desk'].forEach(id => {
+    const b = document.getElementById(id);
+    if (b) b.addEventListener('click', () => applyTheme(!document.body.classList.contains('dark')));
+  });
+  try {
+    if (localStorage.getItem('qc3_theme') === 'dark') applyTheme(true);
+  } catch(e) {}
+});
 </script>
 
 <script src="data.js"></script>
