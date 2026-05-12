@@ -101,6 +101,8 @@ html, body {
   pointer-events: none; overflow: hidden; z-index: 0;
 }
 
+
+
 .qfluc {
   position: absolute;
   font-family: var(--mono);
@@ -253,7 +255,7 @@ body.dark .qfluc {
 .chip-new   { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 5px #22c55e; }
 
 /* ============================================================
-   SIDEBAR FOOTER (desktop)
+   SIDEBAR FOOTER
    ============================================================ */
 .sb-footer {
   padding: 8px 10px; border-top: 1px solid var(--border);
@@ -434,149 +436,37 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
 }
 
 /* ============================================================
-   TOPBAR MOBILE (titre fixe en haut)
-   ============================================================ */
-#mobile-topbar {
-  display: none;
-}
-#mobile-topbar #theme-btn {
-  background: none;
-  border: 1.5px solid var(--border2);
-  border-radius: 8px;
-  width: 32px; height: 32px;
-  font-size: .95rem;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  color: var(--muted);
-  flex-shrink: 0;
-}
-
-/* ============================================================
    MOBILE
    ============================================================ */
 @media (max-width: 680px) {
   :root { --sidebar-w: 100%; }
 
-  /* Barre titre fixe en haut */
-  #mobile-topbar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 44px;
-    background: var(--sidebar-bg);
-    border-bottom: 1px solid var(--border);
-    padding: 0 12px;
-    z-index: 20;
-    box-shadow: 0 2px 8px rgba(0,0,0,.06);
-  }
-  #mobile-topbar span { font-size: 1.3rem; }
-  #mobile-topbar strong { font-size: .9rem; font-weight: 900; flex: 1; }
-  #mobile-topbar .sb-stats { font-size: .65rem; margin: 0; white-space: nowrap; }
-
-  /* Masquer le header dans la sidebar */
-  .sb-header { display: none; }
-
-  /* Sidebar en bas */
   #sidebar {
     position: fixed;
     top: auto; left: 0; right: 0; bottom: 0;
-    height: auto;
-    width: 100%;
-    border-right: none;
-    border-top: 1px solid var(--border);
+    height: 42vh; width: 100%;
+    border-right: none; border-top: 1px solid var(--border);
     box-shadow: 0 -4px 24px rgba(0,0,0,.08);
   }
 
-  /* Canvas entre topbar et sidebar */
-  #canvas {
-    top: 44px; left: 0;
-    bottom: var(--mobile-sb-h, 160px);
-  }
+  #canvas { top: 0; left: 0; bottom: 42vh; }
 
-  /* Ligne recherche + boutons */
-  .sb-search-row {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 6px 10px;
-    border-bottom: 1px solid var(--border);
-  }
+  .sb-header { padding: 7px 10px 5px; }
+  .logo { margin-bottom: 5px; }
 
-  .sb-search {
-    flex: 1;
-    margin-bottom: 0;
-    padding: 7px 10px;
-  }
-
-  .sb-search input { font-size: .82rem; }
-
-  .sb-footer { display: none; }
-
-  .sb-footer-inline {
-    display: flex;
-    gap: 4px;
-    flex-shrink: 0;
-  }
-  .sb-footer-inline button {
-    padding: 7px 11px;
-    border: 1.5px solid var(--border2); border-radius: 9px;
-    background: transparent; font-family: var(--font);
-    font-size: .75rem; font-weight: 800; color: var(--muted);
-    cursor: pointer; transition: all .13s;
-  }
-  .sb-footer-inline .clear-btn:hover { border-color: #f97316; color: #f97316; }
-  .sb-footer-inline button:last-child:hover { border-color: #ef4444; color: #ef4444; }
-
-  /* Filtres scrollables sur une ligne */
-  .sb-filters {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    gap: 5px;
-    padding: 5px 10px;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    border-bottom: 1px solid var(--border);
-  }
-  .sb-filters::-webkit-scrollbar { display: none; }
-  .filt { flex-shrink: 0; font-size: .62rem; padding: 4px 10px; }
-
-  /* Chips horizontaux style original (emoji + nom) */
   #el-list {
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    gap: 4px;
-    padding: 5px 8px;
-    align-items: center;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    height: 52px;
-    flex-shrink: 0;
+    flex-direction: row; flex-wrap: wrap;
+    gap: 4px; padding: 5px 8px;
+    overflow-y: auto; overflow-x: hidden;
+    align-content: flex-start;
   }
-  #el-list::-webkit-scrollbar { display: none; }
-
-  .el-chip {
-    flex: 0 0 auto;
-    flex-direction: row;
-    align-items: center;
-    padding: 4px 8px;
-    border-radius: 20px;
-    gap: 5px;
-    transform: none !important;
-  }
-  .el-chip:hover { transform: none !important; }
-
-  .chip-emoji { font-size: .85rem; width: auto; }
+  .el-chip { flex: 0 0 auto; padding: 5px 9px; border-radius: 20px; gap: 5px; }
+  .chip-emoji { font-size: .85rem; width: 16px; }
   .chip-name  { font-size: .68rem; }
 
+  .sb-footer { padding: 5px 8px; gap: 5px; }
+  .sb-footer button { font-size: .62rem; padding: 6px 4px; }
   .canvas-card { padding: 8px 11px; min-width: 70px; }
-  .cc-name { font-size: .72rem; }
-
-  #toast { bottom: calc(var(--mobile-sb-h, 160px) + 8px); }
-  #canvas-hint p { font-size: .7rem; line-height: 1.9; }
+  .cc-name { font-size: .68rem; }
+  #toast { bottom: calc(42vh + 12px); }
 }
