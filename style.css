@@ -434,12 +434,51 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
 }
 
 /* ============================================================
+   TOPBAR MOBILE (titre fixe en haut)
+   ============================================================ */
+#mobile-topbar {
+  display: none;
+}
+#mobile-topbar #theme-btn {
+  background: none;
+  border: 1.5px solid var(--border2);
+  border-radius: 8px;
+  width: 32px; height: 32px;
+  font-size: .95rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+/* ============================================================
    MOBILE
    ============================================================ */
 @media (max-width: 680px) {
   :root { --sidebar-w: 100%; }
 
-  /* Sidebar en bas, layout fixe en 3 lignes */
+  /* Barre titre fixe en haut */
+  #mobile-topbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 44px;
+    background: var(--sidebar-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 0 12px;
+    z-index: 20;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  #mobile-topbar span { font-size: 1.3rem; }
+  #mobile-topbar strong { font-size: .9rem; font-weight: 900; flex: 1; }
+  #mobile-topbar .sb-stats { font-size: .65rem; margin: 0; white-space: nowrap; }
+
+  /* Masquer le header dans la sidebar */
+  .sb-header { display: none; }
+
+  /* Sidebar en bas */
   #sidebar {
     position: fixed;
     top: auto; left: 0; right: 0; bottom: 0;
@@ -448,44 +487,20 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
     border-right: none;
     border-top: 1px solid var(--border);
     box-shadow: 0 -4px 24px rgba(0,0,0,.08);
-    /* pas de flex-direction column ici, on contrôle via les enfants */
   }
 
-  /* Canvas = tout sauf la sidebar */
+  /* Canvas entre topbar et sidebar */
   #canvas {
-    top: 0; left: 0;
-    bottom: var(--mobile-sb-h, 175px);
+    top: 44px; left: 0;
+    bottom: var(--mobile-sb-h, 160px);
   }
 
-  /* ── LIGNE 1 : logo + stats + theme ── */
-  .sb-header {
-    padding: 6px 10px 0;
-    border-bottom: none;
-  }
-
-  .logo {
-    margin-bottom: 0;
-    align-items: center;
-  }
-
-  .logo-icon { font-size: 1.4rem; }
-  .logo strong { font-size: .85rem; }
-  .logo em { font-size: .58rem; }
-
-  .sb-stats {
-    font-size: .68rem;
-    margin-bottom: 0;
-    white-space: nowrap;
-  }
-
-  .sb-progress { margin-bottom: 5px; margin-top: 3px; height: 2px; }
-
-  /* ── LIGNE 2 : recherche + boutons ── */
+  /* Ligne recherche + boutons */
   .sb-search-row {
     display: flex;
     align-items: center;
     gap: 5px;
-    padding: 5px 10px;
+    padding: 6px 10px;
     border-bottom: 1px solid var(--border);
   }
 
@@ -493,34 +508,28 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
     flex: 1;
     margin-bottom: 0;
     padding: 7px 10px;
-    border-radius: 9px;
   }
 
   .sb-search input { font-size: .82rem; }
 
-  /* Boutons vider/reset inline avec la recherche */
-  .sb-footer {
-    display: none; /* masqué sur mobile, remplacé par .sb-footer-inline */
-  }
+  .sb-footer { display: none; }
 
   .sb-footer-inline {
     display: flex;
     gap: 4px;
     flex-shrink: 0;
   }
-
   .sb-footer-inline button {
-    padding: 7px 10px;
+    padding: 7px 11px;
     border: 1.5px solid var(--border2); border-radius: 9px;
     background: transparent; font-family: var(--font);
-    font-size: .7rem; font-weight: 800; color: var(--muted);
+    font-size: .75rem; font-weight: 800; color: var(--muted);
     cursor: pointer; transition: all .13s;
-    white-space: nowrap;
   }
-  .sb-footer-inline .clear-btn:hover { border-color: #f97316; color: #f97316; background: rgba(249,115,22,.07); }
-  .sb-footer-inline button:last-child:hover { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,.07); }
+  .sb-footer-inline .clear-btn:hover { border-color: #f97316; color: #f97316; }
+  .sb-footer-inline button:last-child:hover { border-color: #ef4444; color: #ef4444; }
 
-  /* ── LIGNE 3 : filtres scrollables ── */
+  /* Filtres scrollables sur une ligne */
   .sb-filters {
     display: flex;
     flex-wrap: nowrap;
@@ -533,53 +542,41 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
     border-bottom: 1px solid var(--border);
   }
   .sb-filters::-webkit-scrollbar { display: none; }
+  .filt { flex-shrink: 0; font-size: .62rem; padding: 4px 10px; }
 
-  .filt {
-    flex-shrink: 0;
-    font-size: .65rem;
-    padding: 5px 12px;
-    border-radius: 20px;
-  }
-
-  /* ── LIGNE 4 : liste éléments en chips horizontaux ── */
+  /* Chips horizontaux style original (emoji + nom) */
   #el-list {
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
-    gap: 5px;
-    padding: 6px 10px;
+    gap: 4px;
+    padding: 5px 8px;
     align-items: center;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
-    height: 58px;
+    height: 52px;
     flex-shrink: 0;
   }
   #el-list::-webkit-scrollbar { display: none; }
 
   .el-chip {
     flex: 0 0 auto;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    padding: 5px 8px;
-    border-radius: 10px;
-    gap: 2px;
-    min-width: 52px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    gap: 5px;
     transform: none !important;
   }
-  .el-chip:hover { box-shadow: 0 2px 8px var(--card-shadow); transform: none !important; }
+  .el-chip:hover { transform: none !important; }
 
-  .chip-emoji { font-size: 1.2rem; width: auto; }
-  .chip-name  { font-size: .58rem; text-align: center; }
-  .chip-info  { display: flex; align-items: center; }
-  .chip-new   { position: absolute; top: 3px; right: 3px; }
+  .chip-emoji { font-size: .85rem; width: auto; }
+  .chip-name  { font-size: .68rem; }
 
-  /* Canvas cards mobile */
   .canvas-card { padding: 8px 11px; min-width: 70px; }
   .cc-name { font-size: .72rem; }
 
-  #toast { bottom: calc(var(--mobile-sb-h, 175px) + 8px); }
-
+  #toast { bottom: calc(var(--mobile-sb-h, 160px) + 8px); }
   #canvas-hint p { font-size: .7rem; line-height: 1.9; }
 }
