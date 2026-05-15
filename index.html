@@ -13,23 +13,27 @@
 
 <aside id="sidebar">
   <div class="sb-header">
-    <div class="logo">
-      <span style="font-size:2rem">⚗️</span>
-      <div>
+    <div class="sb-top-row">
+      <span class="logo-icon">⚗️</span>
+      <div class="logo" style="flex:1">
         <strong>CRAFT GAME</strong>
-                <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
-              </div>
-              <div class="logo-right">
-                <button id="theme-btn">🌙</button>
-              </div>
-            </div>
-    <div class="sb-stats">
-      <b id="nd">11</b> / <b id="nt">?</b> éléments &nbsp;·&nbsp; <b id="fc">0</b> fusions
+        <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
+      </div>
+      <div class="sb-stats">
+        <b id="nd">11</b>/<b id="nt">?</b> &nbsp;·&nbsp; <b id="fc">0</b> ⚗
+      </div>
+      <button id="theme-btn">🌙</button>
     </div>
     <div class="sb-progress"><div id="prog-bar"></div></div>
-    <div class="sb-search">
-      <span>⌕</span>
-      <input id="srch" type="text" placeholder="Rechercher..." oninput="renderSidebar()" autocomplete="off">
+    <div class="sb-search-row">
+      <div class="sb-search" style="margin-bottom:0">
+        <span>⌕</span>
+        <input id="srch" type="text" placeholder="Rechercher..." oninput="renderSidebar()" autocomplete="off">
+      </div>
+      <div class="sb-mobile-btns">
+        <button onclick="clearCanvas()">⊘ Vider</button>
+        <button onclick="resetGame()">↺ Reset</button>
+      </div>
     </div>
     <div class="sb-filters">
       <button class="filt on" data-f="all"      onclick="setFilt(this)">Tout</button>
