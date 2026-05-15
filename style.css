@@ -441,110 +441,32 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
 @media (max-width: 680px) {
   :root { --sidebar-w: 100%; }
 
-  /* TOPBAR — fine barre en haut */
   #sidebar {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: auto;
-    width: 100%; height: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 2px 12px rgba(0,0,0,.08);
-    flex-direction: column;
-  }
-
-  /* Cacher tout sauf le header dans la sidebar */
-  #sidebar #el-list { display: none; }
-  #sidebar .sb-footer { display: none; }
-
-  /* Header compact */
-  .sb-header { padding: 6px 10px; }
-  .logo { margin-bottom: 0; gap: 8px; align-items: center; }
-  .logo-icon { font-size: 1.4rem; }
-  .logo strong { font-size: .9rem; }
-  .logo em { font-size: .58rem; }
-  .sb-stats { font-size: .7rem; margin-bottom: 0; margin-top: 2px; }
-  .sb-progress { height: 2px; margin-bottom: 0; margin-top: 3px; }
-
-  /* Cacher search et filtres du header */
-  .sb-header .sb-search { display: none; }
-  .sb-header .sb-filters { display: none; }
-
-  /* BOTTOMBAR — panneau en bas */
-  #bottom-panel {
-    position: fixed;
-    bottom: 0; left: 0; right: 0;
-    background: var(--sidebar-bg);
-    border-top: 1px solid var(--border);
+    top: auto; left: 0; right: 0; bottom: 0;
+    height: 42vh; width: 100%;
+    border-right: none; border-top: 1px solid var(--border);
     box-shadow: 0 -4px 24px rgba(0,0,0,.08);
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    max-height: 45vh;
   }
 
-  .bp-top {
-    display: flex; align-items: center; gap: 5px;
-    padding: 6px 8px;
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .bp-top .sb-search {
-    flex: 1; margin-bottom: 0; padding: 5px 8px;
-  }
-  .bp-top .sb-filters {
-    display: none;
-  }
+  #canvas { top: 0; left: 0; bottom: 42vh; }
 
-  .bp-filters {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    gap: 4px;
-    padding: 5px 8px;
-    border-bottom: 1px solid var(--border);
-    scrollbar-width: none;
-    flex-shrink: 0;
-  }
-  .bp-filters::-webkit-scrollbar { display: none; }
-  .bp-filters .filt { flex-shrink: 0; font-size: .55rem; padding: 3px 9px; }
+  .sb-header { padding: 7px 10px 5px; }
+  .logo { margin-bottom: 5px; }
 
-  .bp-list {
-    flex: 1;
-    display: flex; flex-direction: row; flex-wrap: wrap;
+  #el-list {
+    flex-direction: row; flex-wrap: wrap;
     gap: 4px; padding: 5px 8px;
     overflow-y: auto; overflow-x: hidden;
     align-content: flex-start;
   }
-  .bp-list .el-chip { flex: 0 0 auto; padding: 5px 9px; border-radius: 20px; gap: 5px; }
-  .bp-list .chip-emoji { font-size: .85rem; width: 16px; }
-  .bp-list .chip-name  { font-size: .68rem; }
+  .el-chip { flex: 0 0 auto; padding: 5px 9px; border-radius: 20px; gap: 5px; }
+  .chip-emoji { font-size: .85rem; width: 16px; }
+  .chip-name  { font-size: .68rem; }
 
-  .bp-footer {
-    display: flex; gap: 5px;
-    padding: 5px 8px;
-    border-top: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .bp-footer button {
-    flex: 1; padding: 6px 4px;
-    border: 1.5px solid var(--border2); border-radius: 9px;
-    background: transparent; font-family: var(--font);
-    font-size: .62rem; font-weight: 800; color: var(--muted);
-    cursor: pointer; transition: all .13s;
-    text-transform: uppercase; letter-spacing: .04em;
-  }
-  .bp-footer button:first-child:hover { border-color: #f97316; color: #f97316; }
-  .bp-footer button:last-child:hover  { border-color: #ef4444; color: #ef4444; }
-
-  /* Canvas entre les deux barres */
-  #canvas {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    padding-top: var(--topbar-h, 60px);
-    padding-bottom: var(--bottombar-h, 200px);
-  }
-
+  .sb-footer { padding: 5px 8px; gap: 5px; }
+  .sb-footer button { font-size: .62rem; padding: 6px 4px; }
   .canvas-card { padding: 8px 11px; min-width: 70px; }
   .cc-name { font-size: .68rem; }
-  #toast { bottom: calc(var(--bottombar-h, 200px) + 10px); }
+  #toast { bottom: calc(42vh + 12px); }
 }
