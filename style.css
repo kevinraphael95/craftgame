@@ -509,72 +509,74 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
    MOBILE — Header compact + catégories scroll horizontal
    ============================================================ */
 @media (max-width: 680px) {
-  .sb-header {
-    display: flex;
+  :root { --sidebar-w: 100%; }
+
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: auto;
+    height: auto;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 24px rgba(0,0,0,.08);
     flex-direction: column;
-    gap: 5px;
-    padding: 6px 8px 5px;
   }
 
-  /* Ligne 1 : logo + stats + boutons */
-  .sb-top-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+  #canvas {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    /* sera poussé par le padding-top dynamique */
   }
-  .logo {
-    margin-bottom: 0;
-    flex: 1;
-    gap: 7px;
-  }
-  .logo strong { font-size: .9rem; }
-  .logo em { font-size: .6rem; display: none; } /* masquer le sous-titre sur mobile */
-  .logo-icon { font-size: 1.5rem; }
 
-  /* Ligne 2 : search + vider + réinit */
-  .sb-search-row {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+  #canvas-area {
+    position: absolute; inset: 0;
   }
-  .sb-search { margin-bottom: 0; flex: 1; padding: 5px 8px; }
 
-  /* Déplacer les boutons footer dans la search row sur mobile */
-  .sb-footer { display: none; } /* cacher le footer original */
-  .sb-mobile-btns {
-    display: flex;
-    gap: 4px;
-    flex-shrink: 0;
-  }
-  .sb-mobile-btns button {
-    padding: 5px 8px;
-    border: 1.5px solid var(--border2);
-    border-radius: 8px;
-    background: transparent;
-    font-family: var(--font);
-    font-size: .6rem;
-    font-weight: 800;
-    color: var(--muted);
-    cursor: pointer;
-    white-space: nowrap;
-    text-transform: uppercase;
-  }
-  .sb-mobile-btns button:first-child:hover { border-color: #f97316; color: #f97316; }
-  .sb-mobile-btns button:last-child:hover  { border-color: #ef4444; color: #ef4444; }
+  .sb-header { padding: 6px 8px 5px; }
 
-  /* Ligne 3 : catégories scroll horizontal */
+  .logo { margin-bottom: 0; }
+  .logo strong { font-size: .95rem; }
+  .logo em { font-size: .6rem; }
+  .logo-icon { font-size: 1.6rem; }
+
+  .sb-stats { font-size: .72rem; margin-bottom: 3px; }
+  .sb-progress { margin-bottom: 4px; height: 2px; }
+
+  .sb-search { margin-bottom: 4px; padding: 5px 8px; }
+
   .sb-filters {
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
     gap: 4px;
-    padding-bottom: 2px;
+    padding-bottom: 3px;
     scrollbar-width: none;
+    margin-bottom: 0;
   }
   .sb-filters::-webkit-scrollbar { display: none; }
   .filt { flex-shrink: 0; font-size: .55rem; padding: 3px 9px; }
 
-  /* Stats sur une ligne compacte */
-  .sb-stats { font-size: .7rem; margin-bottom: 0; }
-  .sb-progress { margin-bottom: 0; height: 2px; }
+  #el-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 5px 8px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-content: flex-start;
+    max-height: 35vh;
+  }
+
+  .el-chip { flex: 0 0 auto; padding: 5px 9px; border-radius: 20px; gap: 5px; }
+  .chip-emoji { font-size: .85rem; width: 16px; }
+  .chip-name  { font-size: .68rem; }
+
+  .sb-footer { padding: 5px 8px; gap: 5px; }
+  .sb-footer button { font-size: .62rem; padding: 6px 4px; }
+
+  .canvas-card { padding: 8px 11px; min-width: 70px; }
+  .cc-name { font-size: .68rem; }
+
+  #toast { bottom: 20px; }
 }
