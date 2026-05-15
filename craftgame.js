@@ -206,10 +206,27 @@ function makeDraggable(el, cardId) {
     const c = getCard();
     if (c) { c.x = nx; c.y = ny; }
     highlightNear(cardId, nx, ny);
-
+  
+    // Preview fusion sur les cartes canvas
+    const dragged = getCard();
+    if (dragged) {
+      let closest = null, bestD = 999;
+      cards.forEach(other => {
+        if (other.id === cardId) return;
+        const d = cardDist(dragged, other);
+        if (d < FUSE_DIST && d < bestD) { bestD = d; closest = other; }
+      });
+      if (closest) {
+        if (!previewEl) createFusionPreview(dragged.name);
+        updateFusionPreview(dragged.name, closest);
+      } else {
+        if (previewEl) previewEl.style.display = "none";
+      }
+    }
+  
     // Détecter survol de la sidebar
     const sr = sidebar.getBoundingClientRect();
-    dragOverSidebar = window.innerWidth <= 680 ? cy > sr.top : (cx < sr.right && cx > sr.left);
+    dragOverSidebar = window.innerWidth <= 680 ? cy < sr.bottom && cy > sr.top : (cx < sr.right && cx > sr.left);
     el.classList.toggle("drag-to-delete", dragOverSidebar);
   };
 
@@ -220,15 +237,16 @@ function makeDraggable(el, cardId) {
     el.classList.remove("dragging");
     el.classList.remove("drag-to-delete");
     clearHighlights();
-
+    destroyFusionPreview();   // ← ajouter cette ligne
+  
     // Drop sur la sidebar = suppression
     const sr = sidebar.getBoundingClientRect();
-    const onSidebar = window.innerWidth <= 680 ? cy > sr.top : cx < sr.right;
+    const onSidebar = window.innerWidth <= 680 ? cy < sr.bottom && cy > sr.top : cx < sr.right;
     if (onSidebar) {
       flashRemove(cardId);
       return;
     }
-
+  
     tryFuseNear(cardId);
   };
 
@@ -603,6 +621,26 @@ function initQuantumBg() {
     setTimeout(() => sym.remove(), 2500);
   }, 120);
 }
+
+
+// ============================================================
+// un truc
+// ============================================================
+
+function adjustCanvasForMobile() {
+  if (window.innerWidth <= 680) {
+    const sb = document.getElementById("sidebar");
+    document.getElementById("canvas").style.paddingTop = sb.offsetHeight + "px";
+  } else {
+    document.getElementById("canvas").style.paddingTop = "";
+  }
+}
+
+adjustCanvasForMobile();
+window.addEventListener("resize", adjustCanvasForMobile);
+
+// Observer les changements de taille de la sidebar
+new ResizeObserver(adjustCanvasForMobile).observe(document.getElementById("sidebar"));
 
 // ============================================================
 // BOOT
