@@ -86,32 +86,5 @@
 
 <script src="data.js"></script>
 <script src="craftgame.js"></script>
-<!-- Panel du bas (mobile uniquement) -->
-<div id="bottom-panel">
-  <div class="bp-top">
-    <div class="sb-search">
-      <span>⌕</span>
-      <input id="srch2" type="text" placeholder="Rechercher..." oninput="renderSidebarMobile()" autocomplete="off">
-    </div>
-  </div>
-  <div class="bp-filters">
-    <button class="filt on" data-f="all"      onclick="setFilt(this)">Tout</button>
-    <button class="filt"    data-f="quark"     onclick="setFilt(this)">Quarks</button>
-    <button class="filt"    data-f="lepton"    onclick="setFilt(this)">Leptons</button>
-    <button class="filt"    data-f="boson"     onclick="setFilt(this)">Bosons</button>
-    <button class="filt"    data-f="hadron"    onclick="setFilt(this)">Hadrons</button>
-    <button class="filt"    data-f="nucleus"   onclick="setFilt(this)">Noyaux</button>
-    <button class="filt"    data-f="atom"      onclick="setFilt(this)">Atomes</button>
-    <button class="filt"    data-f="molecule"  onclick="setFilt(this)">Molécules</button>
-    <button class="filt"    data-f="phase"     onclick="setFilt(this)">Phases</button>
-    <button class="filt"    data-f="stellar"   onclick="setFilt(this)">Stellaire</button>
-    <button class="filt"    data-f="cosmic"    onclick="setFilt(this)">Cosmique</button>
-  </div>
-  <div class="bp-list" id="el-list-mobile"></div>
-  <div class="bp-footer">
-    <button onclick="clearCanvas()">⊘ Vider</button>
-    <button onclick="resetGame()">↺ Réinitialiser</button>
-  </div>
-</div>
 </body>
 </html>
