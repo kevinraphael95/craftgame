@@ -96,8 +96,53 @@ function renderSidebar() {
       ev.dataTransfer.setData("spawn", name);
     });
     list.appendChild(chip);
+    
+  });
+  renderSidebarMobile();
+}
+
+
+// ============================================================
+// SIDEBAR MOBILE
+// ============================================================
+
+function renderSidebarMobile() {
+  const search = (document.getElementById("srch2")?.value || "").toLowerCase().trim();
+  const list = document.getElementById("el-list-mobile");
+  if (!list) return;
+  const items = [...discovered]
+    .filter(n => {
+      const e = ELEMENTS[n]; if(!e) return false;
+      if(activeFilt !== "all" && e.cat !== activeFilt) return false;
+      if(search && !n.toLowerCase().includes(search) && !(e.label||"").toLowerCase().includes(search)) return false;
+      return true;
+    })
+    .sort((a,b) => (CAT_ORDER.indexOf(ELEMENTS[a].cat) - CAT_ORDER.indexOf(ELEMENTS[b].cat)) || a.localeCompare(b,"fr"));
+  list.innerHTML = "";
+  items.forEach(name => {
+    const e = ELEMENTS[name];
+    const chip = document.createElement("div");
+    chip.className = "el-chip";
+    chip.dataset.cat = e.cat;
+    chip.dataset.name = name;
+    chip.innerHTML = `
+      <span class="chip-emoji">${e.emoji}</span>
+      <div class="chip-info"><div class="chip-name">${e.label}</div></div>
+      ${newElements.has(name) ? '<span class="chip-new"></span>' : ""}
+    `;
+    chip.addEventListener("click", () => {
+      newElements.delete(name);
+      renderSidebarMobile();
+      spawnCard(name);
+    });
+    list.appendChild(chip);
   });
 }
+
+
+// ============================================================
+// ??
+// ============================================================
 
 function setFilt(btn) {
   activeFilt = btn.dataset.f;
@@ -536,6 +581,21 @@ function initQuantumBg() {
   }, 120);
 }
 
+function adjustBars() {
+  if (window.innerWidth <= 680) {
+    const top = document.getElementById("sidebar").offsetHeight;
+    const bot = document.getElementById("bottom-panel")?.offsetHeight || 0;
+    document.getElementById("canvas").style.paddingTop = top + "px";
+    document.getElementById("canvas").style.paddingBottom = bot + "px";
+    document.documentElement.style.setProperty("--topbar-h", top + "px");
+    document.documentElement.style.setProperty("--bottombar-h", bot + "px");
+  } else {
+    document.getElementById("canvas").style.paddingTop = "";
+    document.getElementById("canvas").style.paddingBottom = "";
+  }
+}
+
+
 // ============================================================
 // BOOT
 // ============================================================
@@ -543,6 +603,12 @@ document.addEventListener("DOMContentLoaded", () => {
   init();
     initCanvasDrop();
     initQuantumBg();
+
+    adjustBars();
+    window.addEventListener("resize", adjustBars);
+    new ResizeObserver(adjustBars).observe(document.getElementById("sidebar"));
+    const bp = document.getElementById("bottom-panel");
+    if (bp) new ResizeObserver(adjustBars).observe(bp);  
   
     document.getElementById("theme-btn").addEventListener("click", () => {
       document.body.classList.toggle("dark");
