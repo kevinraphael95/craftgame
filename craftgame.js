@@ -9,6 +9,8 @@ let activeFilt  = "all";
 let fusionCount = 0;
 let cards       = [];
 let nextCardId  = 0;
+let previewEl = null;
+let previewTarget = null;
 
 function init() {
   discovered.clear();
@@ -94,6 +96,8 @@ function renderSidebar() {
     });
     chip.addEventListener("dragstart", ev => {
       ev.dataTransfer.setData("spawn", name);
+      window._dragName = name;
+      createFusionPreview(name);
     });
     list.appendChild(chip);
   });
@@ -407,13 +411,77 @@ function doFusion(involved, rec) {
 }
 
 // ============================================================
+// Des trucs ?
+// ============================================================
+
+function createFusionPreview(name) {
+  if (previewEl) previewEl.remove();
+  previewEl = document.createElement("div");
+  previewEl.className = "fusion-preview";
+  previewEl.style.display = "none";
+  document.body.appendChild(previewEl);
+}
+
+function updateFusionPreview(draggedName, targetCard) {
+  if (!previewEl) return;
+  const rec = findRecipe2(draggedName, targetCard.name);
+  if (rec && ELEMENTS[rec.r]) {
+    const e = ELEMENTS[rec.r];
+    previewEl.innerHTML = `
+      <span class="fp-arrow">→</span>
+      <span class="fp-emoji">${e.emoji}</span>
+      <span class="fp-name">${e.label}</span>
+      ${!discovered.has(rec.r) ? '<span class="fp-new">✦</span>' : ''}
+    `;
+    previewEl.dataset.cat = e.cat;
+    previewEl.style.display = "flex";
+    const rect = targetCard.el.getBoundingClientRect();
+    previewEl.style.left = (rect.left + rect.width / 2) + "px";
+    previewEl.style.top  = (rect.top - 48) + "px";
+    previewTarget = targetCard.id;
+  } else {
+    previewEl.style.display = "none";
+    previewTarget = null;
+  }
+}
+
+function destroyFusionPreview() {
+  if (previewEl) { previewEl.remove(); previewEl = null; }
+  previewTarget = null;
+}
+
+// ============================================================
 // DROP depuis sidebar vers canvas
 // ============================================================
 function initCanvasDrop() {
   const area = canvasArea();
-  area.addEventListener("dragover", ev => ev.preventDefault());
+
+  area.addEventListener("dragover", ev => {
+    ev.preventDefault();
+    const name = window._dragName;
+    if (!name) return;
+    const rect = area.getBoundingClientRect();
+    const mx = ev.clientX - rect.left;
+    const my = ev.clientY - rect.top;
+    let closest = null, bestD = 999;
+    cards.forEach(c => {
+      const d = Math.sqrt((c.x - mx)**2 + (c.y - my)**2);
+      if (d < 100 && d < bestD) { bestD = d; closest = c; }
+    });
+    cards.forEach(c => c.el.classList.toggle("near", c === closest));
+    if (closest) updateFusionPreview(name, closest);
+    else if (previewEl) previewEl.style.display = "none";
+  });
+
+  area.addEventListener("dragleave", () => {
+    cards.forEach(c => c.el.classList.remove("near"));
+    if (previewEl) previewEl.style.display = "none";
+  });
+
   area.addEventListener("drop", ev => {
     ev.preventDefault();
+    cards.forEach(c => c.el.classList.remove("near"));
+    destroyFusionPreview();
     const name = ev.dataTransfer.getData("spawn");
     if (!name || !ELEMENTS[name]) return;
     const rect = area.getBoundingClientRect();
@@ -543,6 +611,12 @@ document.addEventListener("DOMContentLoaded", () => {
   init();
     initCanvasDrop();
     initQuantumBg();
+
+    document.addEventListener("dragend", () => {
+      destroyFusionPreview();
+      window._dragName = null;
+      cards.forEach(c => c.el.classList.remove("near"));
+    });
   
     document.getElementById("theme-btn").addEventListener("click", () => {
       document.body.classList.toggle("dark");
