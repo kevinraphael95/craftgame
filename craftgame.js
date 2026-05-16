@@ -82,19 +82,103 @@ function renderSidebar() {
     chip.draggable    = true;
     chip.innerHTML = `
       <span class="chip-emoji">${e.emoji}</span>
-      <div class="chip-info">
-        <div class="chip-name">${e.label}</div>
-      </div>
+      <div class="chip-info"><div class="chip-name">${e.label}</div></div>
       ${newElements.has(name) ? '<span class="chip-new"></span>' : ""}
     `;
-    chip.addEventListener("click", () => {
-      newElements.delete(name);
-      renderSidebar();
-      spawnCard(name);
-    });
-    chip.addEventListener("dragstart", ev => {
-      ev.dataTransfer.setData("spawn", name);
-    });
+    chip.addEventListener("click", () => { newElements.delete(name); renderSidebar(); spawnCard(name); });
+    chip.addEventListener("dragstart", ev => { ev.dataTransfer.setData("spawn", name); });
+    list.appendChild(chip);
+  });
+
+  renderMobile();
+}
+
+let activeFiltMobile = "all";
+
+function setFiltMobile(btn) {
+  activeFiltMobile = btn.dataset.f;
+  document.querySelectorAll("#bottom-panel .filt").forEach(b => b.classList.remove("on"));
+  btn.classList.add("on");
+  renderMobile();
+}
+
+function renderMobile() {
+  const list = document.getElementById("el-list-mobile");
+  if (!list) return;
+  const search = (document.getElementById("srch-mobile")?.value || "").toLowerCase().trim();
+  const items = [...discovered]
+    .filter(n => {
+      const e = ELEMENTS[n]; if(!e) return false;
+      if(activeFiltMobile !== "all" && e.cat !== activeFiltMobile) return false;
+      if(search && !n.toLowerCase().includes(search) && !(e.label||"").toLowerCase().includes(search)) return false;
+      return true;
+    })
+    .sort((a,b) => (CAT_ORDER.indexOf(ELEMENTS[a].cat) - CAT_ORDER.indexOf(ELEMENTS[b].cat)) || a.localeCompare(b,"fr"));
+
+  list.innerHTML = "";
+  items.forEach(name => {
+    const e = ELEMENTS[name];
+    const chip = document.createElement("div");
+    chip.className = "el-chip";
+    chip.dataset.cat = e.cat;
+    chip.dataset.name = name;
+    chip.innerHTML = `
+      <span class="chip-emoji">${e.emoji}</span>
+      <div class="chip-info"><div class="chip-name">${e.label}</div></div>
+      ${newElements.has(name) ? '<span class="chip-new"></span>' : ""}
+    `;
+
+    // Tap = spawn au centre
+    chip.addEventListener("click", () => { newElements.delete(name); renderMobile(); spawnCard(name); });
+
+    // Touch drag vers le canvas
+    chip.addEventListener("touchstart", ev => {
+      const t0 = ev.touches[0];
+      let moved = false;
+      const ghost = document.createElement("div");
+      ghost.className = "canvas-card dragging";
+      ghost.dataset.cat = e.cat;
+      ghost.innerHTML = `<span class="cc-emoji">${e.emoji}</span><span class="cc-name">${e.label}</span>`;
+      ghost.style.cssText = `position:fixed;z-index:9999;pointer-events:none;opacity:.85;left:${t0.clientX-50}px;top:${t0.clientY-20}px;`;
+      document.body.appendChild(ghost);
+
+      const onMove = ev => {
+        ev.preventDefault();
+        moved = true;
+        const t = ev.touches[0];
+        ghost.style.left = (t.clientX - 50) + "px";
+        ghost.style.top  = (t.clientY - 20) + "px";
+        const area = canvasArea();
+        const rect = area.getBoundingClientRect();
+        const mx = t.clientX - rect.left;
+        const my = t.clientY - rect.top;
+        cards.forEach(c => {
+          const d = Math.sqrt((c.x-mx)**2 + (c.y-my)**2);
+          c.el.classList.toggle("near", d < FUSE_DIST);
+        });
+      };
+
+      const onEnd = ev => {
+        ghost.remove();
+        cards.forEach(c => c.el.classList.remove("near"));
+        chip.removeEventListener("touchmove", onMove);
+        chip.removeEventListener("touchend", onEnd);
+        if (!moved) return; // c'était un tap, le click s'en charge
+        const t = ev.changedTouches[0];
+        const bp = document.getElementById("bottom-panel")?.getBoundingClientRect();
+        if (bp && t.clientY > bp.top) return; // dropped sur le panel
+        const area = canvasArea();
+        const rect = area.getBoundingClientRect();
+        if (t.clientY < rect.top) return; // dropped sur la topbar
+        newElements.delete(name);
+        renderMobile();
+        spawnCard(name, t.clientX - rect.left - 50, t.clientY - rect.top - 20);
+      };
+
+      chip.addEventListener("touchmove", onMove, { passive: false });
+      chip.addEventListener("touchend", onEnd);
+    }, { passive: true });
+
     list.appendChild(chip);
   });
 }
@@ -541,20 +625,41 @@ function initQuantumBg() {
 // ============================================================
 document.addEventListener("DOMContentLoaded", () => {
   init();
-    initCanvasDrop();
-    initQuantumBg();
-  
-    document.getElementById("theme-btn").addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      const dark = document.body.classList.contains("dark");
-      document.getElementById("theme-btn").textContent = dark ? "☀️" : "🌙";
-      try { localStorage.setItem("qc3_theme", dark ? "dark" : "light"); } catch(e){}
-    });
-    try {
-      if (localStorage.getItem("qc3_theme") === "dark") {
-        document.body.classList.add("dark");
-        document.getElementById("theme-btn").textContent = "☀️";
-      }
-    } catch(e) {}
-  document.addEventListener("contextmenu", ev => ev.preventDefault());
+  initCanvasDrop();
+  initQuantumBg();
+
+  // Search mobile
+  document.getElementById("srch-mobile")?.addEventListener("input", renderMobile);
+
+  // Ajuster canvas entre topbar et bottombar
+  function adjustBars() {
+    if (window.innerWidth <= 680) {
+      const top = document.getElementById("sidebar").offsetHeight;
+      const bot = document.getElementById("bottom-panel")?.offsetHeight || 0;
+      document.getElementById("canvas").style.paddingTop    = top + "px";
+      document.getElementById("canvas").style.paddingBottom = bot + "px";
+    } else {
+      document.getElementById("canvas").style.paddingTop    = "";
+      document.getElementById("canvas").style.paddingBottom = "";
+    }
+  }
+  adjustBars();
+  window.addEventListener("resize", adjustBars);
+  new ResizeObserver(adjustBars).observe(document.getElementById("sidebar"));
+  const bp = document.getElementById("bottom-panel");
+  if (bp) new ResizeObserver(adjustBars).observe(bp);
+
+  document.getElementById("theme-btn").addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    const dark = document.body.classList.contains("dark");
+    document.getElementById("theme-btn").textContent = dark ? "☀️" : "🌙";
+    try { localStorage.setItem("qc3_theme", dark ? "dark" : "light"); } catch(e){}
   });
+  try {
+    if (localStorage.getItem("qc3_theme") === "dark") {
+      document.body.classList.add("dark");
+      document.getElementById("theme-btn").textContent = "☀️";
+    }
+  } catch(e) {}
+  document.addEventListener("contextmenu", ev => ev.preventDefault());
+});
