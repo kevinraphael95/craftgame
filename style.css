@@ -438,6 +438,7 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
 /* ============================================================
    MOBILE
    ============================================================ */
+#bottom-panel { display: none; }
 @media (max-width: 680px) {
   /* Sidebar = topbar fine en haut */
   #sidebar {
