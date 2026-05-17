@@ -790,6 +790,7 @@ function renderRecipes() {
 
 let sideRight = false;
 function toggleSide() {
+  clearCanvas();
   sideRight = !sideRight;
   const sidebar = document.getElementById("sidebar");
   const canvas = document.getElementById("canvas");
