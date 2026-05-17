@@ -667,3 +667,64 @@ document.addEventListener("DOMContentLoaded", () => {
   } catch(e) {}
   document.addEventListener("contextmenu", ev => ev.preventDefault());
 });
+
+// ============================================================
+// RECTETTES
+// ============================================================
+
+
+function openRecipes() {
+  renderRecipes();
+  const m = document.getElementById("modal-recipes");
+  m.style.display = "flex";
+  requestAnimationFrame(() => m.classList.add("show"));
+}
+
+function closeRecipes() {
+  const m = document.getElementById("modal-recipes");
+  m.classList.remove("show");
+  setTimeout(() => { m.style.display = "none"; }, 220);
+}
+
+function renderRecipes() {
+  const search = (document.getElementById("recipe-search")?.value || "").toLowerCase().trim();
+  const list = document.getElementById("recipe-list");
+  if (!list) return;
+
+  // Toutes les recettes dont le résultat est découvert
+  const found = RECIPES_2.filter(rec => {
+    if (!discovered.has(rec.r)) return false;
+    if (!discovered.has(rec.a) && !discovered.has(rec.b)) return false;
+    if (search) {
+      const ra = (ELEMENTS[rec.a]?.label || rec.a).toLowerCase();
+      const rb = (ELEMENTS[rec.b]?.label || rec.b).toLowerCase();
+      const rr = (ELEMENTS[rec.r]?.label || rec.r).toLowerCase();
+      return ra.includes(search) || rb.includes(search) || rr.includes(search);
+    }
+    return true;
+  });
+
+  list.innerHTML = "";
+  if (found.length === 0) {
+    list.innerHTML = `<div style="text-align:center;color:var(--muted);padding:20px;font-size:.8rem;">Aucune recette trouvée</div>`;
+    return;
+  }
+
+  found.forEach(rec => {
+    const ea = ELEMENTS[rec.a];
+    const eb = ELEMENTS[rec.b];
+    const er = ELEMENTS[rec.r];
+    const div = document.createElement("div");
+    div.className = "recipe-item";
+    div.innerHTML = `
+      <span>${ea?.emoji || ""}</span>
+      <span>${ea?.label || rec.a}</span>
+      <span style="color:var(--muted)">+</span>
+      <span>${eb?.emoji || ""}</span>
+      <span>${eb?.label || rec.b}</span>
+      <span style="color:var(--muted)">→</span>
+      <span class="ri-result">${er?.emoji || ""} ${er?.label || rec.r}</span>
+    `;
+    list.appendChild(div);
+  });
+}
