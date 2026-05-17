@@ -311,7 +311,9 @@ function makeDraggable(el, cardId) {
     el.classList.remove("dragging");
     el.classList.remove("drag-to-delete");
     clearHighlights();
-
+  
+    const moved = Math.abs(cx - startX) > 5 || Math.abs(cy - startY) > 5; // ← ajouter
+  
     if (window.innerWidth <= 680) {
       const bp = document.getElementById("bottom-panel")?.getBoundingClientRect();
       if (bp && cy > bp.top) { flashRemove(cardId); return; }
@@ -319,8 +321,8 @@ function makeDraggable(el, cardId) {
       const sr = sidebar.getBoundingClientRect();
       if (cx >= sr.left && cx <= sr.right) { flashRemove(cardId); return; }
     }
-
-    tryFuseNear(cardId);
+  
+    if (moved) tryFuseNear(cardId); // ← seulement si déplacé
   };
 
   // Mouse
