@@ -487,29 +487,40 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
 #bottom-panel { display: none; }
 @media (max-width: 680px) {
   /* Sidebar = topbar fine en haut */
-  #sidebar {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: auto;
-    width: 100%; height: auto;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    box-shadow: 0 2px 12px rgba(0,0,0,.08);
-  }
+  /* Sidebar = topbar transparente en haut */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: auto;
+      width: 100%; height: auto;
+      border-right: none;
+      border-bottom: none;
+      background: transparent;
+      box-shadow: none;
+    }
 
-  /* Cacher tout sauf le logo/stats dans la sidebar */
-  #sidebar .sb-search  { display: none; }
-  #sidebar .sb-filters { display: none; }
-  #sidebar #el-list    { display: none; }
-  #sidebar .sb-footer  { display: none; }
-  #sidebar .sb-progress { margin-bottom: 0; }
+    #sidebar .sb-search  { display: none; }
+    #sidebar .sb-filters { display: none; }
+    #sidebar #el-list    { display: none; }
+    #sidebar .sb-footer  { display: none; }
+    #sidebar .sb-progress { display: none; }
 
-  .sb-header { padding: 5px 10px; }
-  .logo { margin-bottom: 0; gap: 8px; }
-  .logo-icon { font-size: 1.4rem; }
-  .logo strong { font-size: .9rem; }
-  .logo em { display: none; }
-  .sb-stats { display: none; }
-  .sb-progress { display: none; }
+    .sb-header { padding: 8px 12px; background: transparent; border-bottom: none; }
+    .logo { margin-bottom: 0; gap: 10px; }
+    .logo-icon { font-size: 2rem; }
+    .logo strong { font-size: 1.1rem; font-weight: 900; }
+    .logo em { display: none; }
+    .sb-stats { display: none; }
+    .sb-progress { display: none; }
+    #theme-btn {
+      background: rgba(255,255,255,.2);
+      backdrop-filter: blur(8px);
+      border-color: rgba(255,255,255,.3);
+      color: var(--text);
+    }
+    body.dark #theme-btn {
+      background: rgba(0,0,0,.25);
+      border-color: rgba(255,255,255,.15);
+    }
 
   /* Canvas entre les deux barres — padding géré par JS */
   #canvas {
