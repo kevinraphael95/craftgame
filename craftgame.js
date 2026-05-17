@@ -287,9 +287,13 @@ function makeDraggable(el, cardId) {
     if (c) { c.x = nx; c.y = ny; }
     highlightNear(cardId, nx, ny);
 
-    // Détecter survol de la sidebar
-    const sr = sidebar.getBoundingClientRect();
-    dragOverSidebar = window.innerWidth <= 680 ? cy > sr.top : (cx < sr.right && cx > sr.left);
+    if (window.innerWidth <= 680) {
+      const bp = document.getElementById("bottom-panel")?.getBoundingClientRect();
+      dragOverSidebar = bp ? cy > bp.top : false;
+    } else {
+      const sr = sidebar.getBoundingClientRect();
+      dragOverSidebar = cx < sr.right && cx > sr.left;
+    }
     el.classList.toggle("drag-to-delete", dragOverSidebar);
   };
 
@@ -301,12 +305,12 @@ function makeDraggable(el, cardId) {
     el.classList.remove("drag-to-delete");
     clearHighlights();
 
-    // Drop sur la sidebar = suppression
-    const sr = sidebar.getBoundingClientRect();
-    const onSidebar = window.innerWidth <= 680 ? cy > sr.top : cx < sr.right;
-    if (onSidebar) {
-      flashRemove(cardId);
-      return;
+    if (window.innerWidth <= 680) {
+      const bp = document.getElementById("bottom-panel")?.getBoundingClientRect();
+      if (bp && cy > bp.top) { flashRemove(cardId); return; }
+    } else {
+      const sr = sidebar.getBoundingClientRect();
+      if (cx < sr.right) { flashRemove(cardId); return; }
     }
 
     tryFuseNear(cardId);
