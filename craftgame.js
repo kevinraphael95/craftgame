@@ -145,7 +145,7 @@ function renderMobile() {
       const t = ev.touches[0];
       const dx = Math.abs(t.clientX - touchStartX);
       const dy = Math.abs(t.clientY - touchStartY);
-      if (!touchMoved && dy > dx && dy > 8) return;
+      if (!touchMoved && dx > dy && dx > 8) return;
       if (dx > 8 || dy > 8) {
         ev.preventDefault();
         touchMoved = true;
