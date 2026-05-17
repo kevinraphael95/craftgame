@@ -230,10 +230,11 @@ body.dark .qfluc {
 #el-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
 .el-chip {
-  display: flex; align-items: center; gap: 8px;
+  display: inline-flex; align-items: center; gap: 8px;
   padding: 7px 9px; border-radius: 9px;
   cursor: pointer; border: 1.5px solid transparent;
   user-select: none; position: relative;
+  width: fit-content;
   transition: transform .1s, box-shadow .1s;
 }
 .el-chip:hover { box-shadow: 0 2px 8px var(--card-shadow); transform: translateX(2px); }
@@ -576,32 +577,34 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
       .bp-filters::-webkit-scrollbar { display: none; }
       .bp-filters .filt { flex-shrink: 0; font-size: .6rem; padding: 4px 11px; }
    
+
       .bp-list {
-              display: flex;
-              flex-direction: row;
-              flex-wrap: wrap;
-              overflow-x: hidden;
-              overflow-y: auto;
-              gap: 5px;
-              padding: 6px 8px;
-              height: calc(4 * 36px + 3 * 5px + 12px);
-              flex-shrink: 0;
-              align-content: flex-start;
-              scrollbar-width: none;
-            }
-            .bp-list::-webkit-scrollbar { display: none; }
-            .bp-list .el-chip {
-              flex: 0 0 auto;
-              padding: 6px 10px;
-              border-radius: 6px;
-              gap: 5px;
-              display: flex;
-              align-items: center;
-              height: 36px;
-            }
-            .bp-list .chip-emoji { font-size: 1rem; width: 20px; flex-shrink: 0; }
-            .bp-list .chip-name { font-size: .78rem; font-weight: 800; white-space: nowrap; }
-            .bp-list .chip-info { overflow: hidden; min-width: 0; }
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 5px;
+        padding: 6px 8px;
+        height: 52px;
+        flex-shrink: 0;
+        align-items: center;
+        scrollbar-width: none;
+      }
+      .bp-list::-webkit-scrollbar { display: none; }
+      .bp-list .el-chip {
+        flex: 0 0 auto;
+        padding: 6px 10px;
+        border-radius: 6px;
+        gap: 5px;
+        display: inline-flex;
+        align-items: center;
+        height: 36px;
+        width: fit-content;
+      }
+      .bp-list .chip-emoji { font-size: 1rem; width: 20px; flex-shrink: 0; }
+      .bp-list .chip-name { font-size: .78rem; font-weight: 800; white-space: nowrap; }
+      .bp-list .chip-info { overflow: hidden; min-width: 0; }
 
   .canvas-card { padding: 8px 11px; min-width: 70px; }
   .cc-name { font-size: .68rem; }
