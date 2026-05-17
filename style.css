@@ -515,7 +515,7 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
       background: transparent;
       box-shadow: none;
     }
-
+    #sidebar-resizer { display: none; }
     #sidebar .sb-search  { display: none; }
     #sidebar .sb-filters { display: none; }
     #sidebar #el-list    { display: none; }
