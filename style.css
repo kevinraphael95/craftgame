@@ -223,6 +223,7 @@ body.dark .qfluc {
 .filt-expand-btn { flex-shrink: 0; width: 26px; height: 26px; border: 1.5px solid var(--border2); border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; font-size: .75rem; display: flex; align-items: center; justify-content: center; transition: all .15s; }
 .filt-expand-btn:hover { border-color: var(--accent); color: var(--accent); }
 .filt-expand-btn.open { transform: rotate(180deg); border-color: var(--accent); color: var(--accent); }
+@media (max-width: 680px) { .filt-expand-btn { display: none; } }
 .filt {
   font-family: var(--font); font-size: .57rem; font-weight: 800;
   padding: 3px 8px; border-radius: 20px;
