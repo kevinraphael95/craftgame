@@ -279,6 +279,7 @@ function makeDraggable(el, cardId) {
     startLeft = c ? c.x : parseInt(el.style.left) || 0;
     startTop  = c ? c.y : parseInt(el.style.top)  || 0;
     el.style.zIndex = 1000;
+    el.style.zIndex = maxZ + 1;
     el.classList.add("dragging");
   };
 
@@ -307,7 +308,6 @@ function makeDraggable(el, cardId) {
   const onEnd = (cx, cy) => {
     if (!dragging) return;
     dragging = false;
-    el.style.zIndex = "";
     el.classList.remove("dragging");
     el.classList.remove("drag-to-delete");
     clearHighlights();
