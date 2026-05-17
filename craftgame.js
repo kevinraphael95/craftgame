@@ -512,7 +512,23 @@ function initCanvasDrop() {
     const name = ev.dataTransfer.getData("spawn");
     if (!name || !ELEMENTS[name]) return;
     const rect = area.getBoundingClientRect();
-    spawnCard(name, ev.clientX - rect.left - 50, ev.clientY - rect.top - 20);
+    const x = ev.clientX - rect.left - 55;
+    const y = ev.clientY - rect.top - 18;
+
+    // Chercher une carte proche du point de drop
+    const near = cards.filter(c =>
+      Math.sqrt((c.x - x)**2 + (c.y - y)**2) < FUSE_DIST
+    );
+
+    // Tenter fusion directe
+    if (near.length > 0) {
+      // Spawn temporaire pour tenter la fusion
+      spawnCard(name, x, y);
+      const newCard = cards[cards.length - 1];
+      tryFuseNear(newCard.id);
+    } else {
+      spawnCard(name, x, y);
+    }
   });
 }
 
