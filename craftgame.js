@@ -360,15 +360,22 @@ function cardDist(a, b) {
 const FUSE_DIST = 80;
 
 function highlightNear(draggedId, nx, ny) {
-  cards.forEach(c => {
-    if (c.id === draggedId) return;
-    const d = Math.sqrt((c.x - nx)**2 + (c.y - ny)**2);
-    c.el.classList.toggle("near", d < FUSE_DIST);
+  const draggedName = cards.find(c => c.id === draggedId)?.name;
+  const closeCards = cards.filter(c => c.id !== draggedId && Math.sqrt((c.x-nx)**2 + (c.y-ny)**2) < FUSE_DIST);
+  
+  cards.forEach(c => c.el.classList.remove("near", "near-3", "near-fail"));
+  
+  closeCards.forEach(c => {
+    const can2 = findRecipe2(draggedName, c.name) || isAntiPair(draggedName, c.name);
+    const can3 = !can2 && closeCards.some(o => o.id !== c.id && findRecipe3(draggedName, c.name, o.name));
+    if (can2) c.el.classList.add("near");
+    else if (can3) c.el.classList.add("near-3");
+    else c.el.classList.add("near-fail");
   });
 }
 
 function clearHighlights() {
-  cards.forEach(c => c.el.classList.remove("near"));
+  cards.forEach(c => c.el.classList.remove("near", "near-3", "near-fail"));
 }
 
 function tryFuseNear(draggedId) {
