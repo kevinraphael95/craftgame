@@ -508,29 +508,27 @@ function doFusion(involved, rec) {
 // ============================================================
 function initCanvasDrop() {
   const area = canvasArea();
-  area.addEventListener("dragover", ev => ev.preventDefault());
+  area.addEventListener("dragover", ev => {
+    ev.preventDefault();
+    const rect = area.getBoundingClientRect();
+    const x = ev.clientX - rect.left - 55;
+    const y = ev.clientY - rect.top - 18;
+    cards.forEach(c => {
+      const d = Math.sqrt((c.x - x)**2 + (c.y - y)**2);
+      c.el.classList.toggle("near", d < FUSE_DIST);
+    });
+  });
+  area.addEventListener("dragleave", () => clearHighlights());
   area.addEventListener("drop", ev => {
     ev.preventDefault();
+    clearHighlights();
     const name = ev.dataTransfer.getData("spawn");
     if (!name || !ELEMENTS[name]) return;
     const rect = area.getBoundingClientRect();
     const x = ev.clientX - rect.left - 55;
     const y = ev.clientY - rect.top - 18;
-
-    // Chercher une carte proche du point de drop
-    const near = cards.filter(c =>
-      Math.sqrt((c.x - x)**2 + (c.y - y)**2) < FUSE_DIST
-    );
-
-    // Tenter fusion directe
-    if (near.length > 0) {
-      // Spawn temporaire pour tenter la fusion
-      spawnCard(name, x, y);
-      const newCard = cards[cards.length - 1];
-      tryFuseNear(newCard.id);
-    } else {
-      spawnCard(name, x, y);
-    }
+    spawnCard(name, x, y);
+    tryFuseNear(cards[cards.length - 1].id);
   });
 }
 
