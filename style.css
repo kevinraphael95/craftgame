@@ -13,7 +13,7 @@
    VARIABLES — MODE CLAIR (défaut)
    ============================================================ */
 :root {
-  --sidebar-w: 300px;
+  --sidebar-w: 420px;
   --font: 'Nunito', sans-serif;
   --mono: 'JetBrains Mono', monospace;
 
@@ -173,7 +173,7 @@ body.dark .qfluc {
   margin-bottom: 9px;
 }
 .logo-icon { font-size: 2.2rem; line-height: 1; }
-.logo strong { display: block; font-size: 1.1rem; font-weight: 900; color: var(--text); }
+.logo strong { display: block; font-size: 1.4rem; font-weight: 900; color: var(--text); }
 .logo em { display: block; font-size: .7rem; font-style: normal; color: var(--muted); margin-top: 1px; text-transform: uppercase; letter-spacing: .07em; }
 .logo-right { margin-left: auto; }
 
@@ -190,8 +190,7 @@ body.dark .qfluc {
 }
 #theme-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-.sb-stats { font-size: .78rem; color: var(--text); margin-bottom: 7px; font-family: var(--mono); }
-.sb-stats b { color: var(--text); font-weight: 800; }
+.sb-stats { display: none; }
 
 .sb-progress {
   height: 3px; background: var(--border); border-radius: 4px;
@@ -218,7 +217,12 @@ body.dark .qfluc {
 }
 .sb-search input::placeholder { color: var(--muted); }
 
-.sb-filters { display: flex; flex-wrap: wrap; gap: 3px; }
+.sb-filters-wrap { display: flex; align-items: center; gap: 4px; }
+.sb-filters { display: flex; flex-wrap: nowrap; overflow: hidden; gap: 3px; flex: 1; height: 26px; }
+.sb-filters.expanded { flex-wrap: wrap; height: auto; overflow: visible; }
+.filt-expand-btn { flex-shrink: 0; width: 26px; height: 26px; border: 1.5px solid var(--border2); border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; font-size: .75rem; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.filt-expand-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filt-expand-btn.open { transform: rotate(180deg); border-color: var(--accent); color: var(--accent); }
 .filt {
   font-family: var(--font); font-size: .57rem; font-weight: 800;
   padding: 3px 8px; border-radius: 20px;
