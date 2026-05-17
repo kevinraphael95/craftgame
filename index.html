@@ -87,9 +87,14 @@
 <script src="data.js"></script>
 <script src="craftgame.js"></script>
 <div id="bottom-panel">
-  <div class="bp-search">
-    <span>⌕</span>
-    <input id="srch-mobile" type="text" placeholder="Rechercher..." autocomplete="off">
+  <div class="bp-toprow">
+    <div class="bp-search">
+      <span>⌕</span>
+      <input id="srch-mobile" type="text" placeholder="Rechercher..." autocomplete="off">
+    </div>
+    <button class="bp-icon-btn" onclick="clearCanvas()" title="Vider">⊘</button>
+    <button class="bp-icon-btn" onclick="resetGame()" title="Réinitialiser">↺</button>
+    <button class="bp-icon-btn" onclick="openRecipes()" title="Recettes">📖</button>
   </div>
   <div class="bp-filters">
     <button class="filt on" data-f="all"      onclick="setFiltMobile(this)">Tout</button>
@@ -105,9 +110,17 @@
     <button class="filt"    data-f="cosmic"    onclick="setFiltMobile(this)">Cosmique</button>
   </div>
   <div class="bp-list" id="el-list-mobile"></div>
-  <div class="bp-footer">
-    <button onclick="clearCanvas()">⊘ Vider</button>
-    <button onclick="resetGame()">↺ Réinitialiser</button>
+</div>
+
+<!-- Modal recettes -->
+<div id="modal-recipes" onclick="closeRecipes()">
+  <div id="modal-recipes-box" onclick="event.stopPropagation()">
+    <div class="mr-header">
+      <h2>📖 Recettes découvertes</h2>
+      <button onclick="closeRecipes()">✕</button>
+    </div>
+    <input id="recipe-search" type="text" placeholder="Rechercher une recette..." oninput="renderRecipes()">
+    <div id="recipe-list"></div>
   </div>
 </div>
 </body>
