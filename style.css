@@ -346,6 +346,21 @@ body.dark .qfluc {
   from { box-shadow: 0 0 0 2px rgba(34,197,94,.35); }
   to   { box-shadow: 0 0 0 5px rgba(34,197,94,.5); }
 }
+
+.canvas-card.near-3 {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56,189,248,.4), 0 4px 14px rgba(56,189,248,.12);
+  animation: pulse-near3 .5s ease infinite alternate;
+}
+@keyframes pulse-near3 {
+  from { box-shadow: 0 0 0 2px rgba(56,189,248,.35); }
+  to   { box-shadow: 0 0 0 5px rgba(56,189,248,.5); }
+}
+.canvas-card.near-fail {
+  border-color: #f97316;
+  box-shadow: 0 0 0 2px rgba(249,115,22,.35);
+}
+
 .canvas-card.shake { animation: shake .35s ease; }
 @keyframes shake {
   0%,100% { transform: translateX(0); }
