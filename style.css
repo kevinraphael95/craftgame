@@ -566,27 +566,31 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
       .bp-filters .filt { flex-shrink: 0; font-size: .6rem; padding: 4px 11px; }
    
       .bp-list {
-        overflow: hidden;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        grid-auto-rows: 42px;
-        grid-template-rows: repeat(4, 42px);
-        gap: 5px; padding: 5px 8px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        scrollbar-width: none;
-        height: calc(4 * 42px + 3 * 5px + 10px);
-        flex-shrink: 0;
-      }
-      .bp-list::-webkit-scrollbar { display: none; }
-      .bp-list .el-chip {
-        padding: 7px 11px; border-radius: 20px; gap: 6px;
-        display: flex; align-items: center; overflow: hidden;
-        height: 38px;
-      }
-      .bp-list .chip-emoji { font-size: 1rem; width: 20px; flex-shrink: 0; }
-      .bp-list .chip-name { font-size: .76rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .bp-list .chip-info { overflow: hidden; min-width: 0; }
+              display: flex;
+              flex-direction: row;
+              flex-wrap: wrap;
+              overflow-x: hidden;
+              overflow-y: auto;
+              gap: 5px;
+              padding: 6px 8px;
+              height: calc(4 * 36px + 3 * 5px + 12px);
+              flex-shrink: 0;
+              align-content: flex-start;
+              scrollbar-width: none;
+            }
+            .bp-list::-webkit-scrollbar { display: none; }
+            .bp-list .el-chip {
+              flex: 0 0 auto;
+              padding: 6px 10px;
+              border-radius: 6px;
+              gap: 5px;
+              display: flex;
+              align-items: center;
+              height: 36px;
+            }
+            .bp-list .chip-emoji { font-size: 1rem; width: 20px; flex-shrink: 0; }
+            .bp-list .chip-name { font-size: .78rem; font-weight: 800; white-space: nowrap; }
+            .bp-list .chip-info { overflow: hidden; min-width: 0; }
 
   .canvas-card { padding: 8px 11px; min-width: 70px; }
   .cc-name { font-size: .68rem; }
