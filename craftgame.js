@@ -603,14 +603,7 @@ function initQuantumBg() {
   const ctx = canvas.getContext("2d");
 
   let W, H, t = 0;
-  const COLS = 32, ROWS = 26, AMP = 9, FREQ = 0.14, SPEED = 0.012;
-
-  // Gouttes d'eau
-  const drops = [];
-  function addDrop() {
-    drops.push({ x: Math.random() * W, y: Math.random() * H, r: 0, max: 80 + Math.random() * 120, age: 0 });
-  }
-  setInterval(addDrop, 1200);
+  const COLS = 16, ROWS = 13, AMP = 9, FREQ = 0.14, SPEED = 0.012;
 
   function resize() {
     W = canvas.width  = bg.offsetWidth;
@@ -636,18 +629,7 @@ function initQuantumBg() {
         let px = c * cw + wave;
         let py = r * ch + wave * 0.55;
 
-        // Déformation par les gouttes
-        for (const d of drops) {
-          const dx = px - d.x, dy = py - d.y;
-          const dist = Math.sqrt(dx*dx + dy*dy);
-          if (dist < d.r + 30 && dist > d.r - 30) {
-            const intensity = Math.max(0, 1 - Math.abs(dist - d.r) / 30);
-            const fade = 1 - d.age;
-            const push = Math.sin(intensity * Math.PI) * 8 * fade;
-            px += (dx / (dist+1)) * push;
-            py += (dy / (dist+1)) * push;
-          }
-        }
+
 
         const alpha = isDark() ? 0.55 : 0.35;
         ctx.fillStyle = isDark()
@@ -659,21 +641,6 @@ function initQuantumBg() {
       }
     }
 
-    // Dessiner les ondes de gouttes
-    for (let i = drops.length - 1; i >= 0; i--) {
-      const d = drops[i];
-      d.r += 1.8;
-      d.age = d.r / d.max;
-      const opacity = (1 - d.age) * (isDark() ? 0.25 : 0.18);
-      ctx.beginPath();
-      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-      ctx.strokeStyle = isDark()
-        ? `rgba(129,140,248,${opacity})`
-        : `rgba(80,60,200,${opacity})`;
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-      if (d.r >= d.max) drops.splice(i, 1);
-    }
 
     t += SPEED;
     requestAnimationFrame(draw);
@@ -681,6 +648,7 @@ function initQuantumBg() {
   draw();
 
   setInterval(() => {
+    if (document.hidden) return;
     const sym = document.createElement("span");
     sym.className = "qfluc";
     sym.textContent = QP_SYMBOLS[Math.floor(Math.random() * QP_SYMBOLS.length)];
