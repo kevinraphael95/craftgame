@@ -132,22 +132,33 @@ function renderMobile() {
     chip.addEventListener("click", () => { newElements.delete(name); renderMobile(); spawnCard(name); });
 
     // Touch drag vers le canvas
+    let touchStartX, touchStartY, touchMoved, ghost2;
+    
     chip.addEventListener("touchstart", ev => {
-      const t0 = ev.touches[0];
-      let moved = false;
-      const ghost = document.createElement("div");
-      ghost.className = "canvas-card dragging";
-      ghost.dataset.cat = e.cat;
-      ghost.innerHTML = `<span class="cc-emoji">${e.emoji}</span><span class="cc-name">${e.label}</span>`;
-      ghost.style.cssText = `position:fixed;z-index:9999;pointer-events:none;opacity:.85;left:${t0.clientX-50}px;top:${t0.clientY-20}px;`;
-      document.body.appendChild(ghost);
-
-      const onMove = ev => {
+      touchStartX = ev.touches[0].clientX;
+      touchStartY = ev.touches[0].clientY;
+      touchMoved = false;
+      ghost2 = null;
+    }, { passive: true });
+    
+    chip.addEventListener("touchmove", ev => {
+      const t = ev.touches[0];
+      const dx = Math.abs(t.clientX - touchStartX);
+      const dy = Math.abs(t.clientY - touchStartY);
+      if (!touchMoved && dy > dx && dy > 8) return;
+      if (dx > 8 || dy > 8) {
         ev.preventDefault();
-        moved = true;
-        const t = ev.touches[0];
-        ghost.style.left = (t.clientX - 50) + "px";
-        ghost.style.top  = (t.clientY - 20) + "px";
+        touchMoved = true;
+        if (!ghost2) {
+          ghost2 = document.createElement("div");
+          ghost2.className = "canvas-card dragging";
+          ghost2.dataset.cat = e.cat;
+          ghost2.innerHTML = `<span class="cc-emoji">${e.emoji}</span><span class="cc-name">${e.label}</span>`;
+          ghost2.style.cssText = `position:fixed;z-index:9999;pointer-events:none;opacity:.85;`;
+          document.body.appendChild(ghost2);
+        }
+        ghost2.style.left = (t.clientX - 50) + "px";
+        ghost2.style.top  = (t.clientY - 20) + "px";
         const area = canvasArea();
         const rect = area.getBoundingClientRect();
         const mx = t.clientX - rect.left;
@@ -156,28 +167,24 @@ function renderMobile() {
           const d = Math.sqrt((c.x-mx)**2 + (c.y-my)**2);
           c.el.classList.toggle("near", d < FUSE_DIST);
         });
-      };
-
-      const onEnd = ev => {
-        ghost.remove();
-        cards.forEach(c => c.el.classList.remove("near"));
-        chip.removeEventListener("touchmove", onMove);
-        chip.removeEventListener("touchend", onEnd);
-        if (!moved) return; // c'était un tap, le click s'en charge
-        const t = ev.changedTouches[0];
-        const bp = document.getElementById("bottom-panel")?.getBoundingClientRect();
-        if (bp && t.clientY > bp.top) return; // dropped sur le panel
-        const area = canvasArea();
-        const rect = area.getBoundingClientRect();
-        if (t.clientY < rect.top) return; // dropped sur la topbar
-        newElements.delete(name);
-        renderMobile();
-        spawnCard(name, t.clientX - rect.left - 50, t.clientY - rect.top - 20);
-      };
-
-      chip.addEventListener("touchmove", onMove, { passive: false });
-      chip.addEventListener("touchend", onEnd);
-    }, { passive: true });
+      }
+    }, { passive: false });
+    
+    chip.addEventListener("touchend", ev => {
+      if (ghost2) ghost2.remove();
+      ghost2 = null;
+      cards.forEach(c => c.el.classList.remove("near"));
+      if (!touchMoved) return;
+      const t = ev.changedTouches[0];
+      const bp = document.getElementById("bottom-panel")?.getBoundingClientRect();
+      if (bp && t.clientY > bp.top) return;
+      const area = canvasArea();
+      const rect = area.getBoundingClientRect();
+      if (t.clientY < rect.top) return;
+      newElements.delete(name);
+      renderMobile();
+      spawnCard(name, t.clientX - rect.left - 50, t.clientY - rect.top - 20);
+    });
 
     list.appendChild(chip);
   });
