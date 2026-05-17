@@ -139,6 +139,18 @@ body.dark .qfluc {
   transition: background .25s, border-color .25s, box-shadow .25s;
 }
 
+#sidebar-resizer {
+  position: fixed;
+  top: 0; bottom: 0;
+  width: 5px;
+  cursor: col-resize;
+  z-index: 20;
+  background: transparent;
+  left: var(--sidebar-w);
+  transition: background .15s;
+}
+#sidebar-resizer:hover, #sidebar-resizer.dragging { background: var(--accent); opacity: .5; }
+
 #canvas {
   position: fixed;
   top: 0; left: var(--sidebar-w); right: 0; bottom: 0;
@@ -257,7 +269,7 @@ body.dark .qfluc {
 .el-chip[data-cat=cosmic]   { background: var(--c-cosmic);   border-color: var(--cb-cosmic); }
 
 .chip-emoji { font-size: 1rem; line-height: 1; flex-shrink: 0; width: 20px; text-align: center; }
-.chip-name  { font-size: .75rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chip-name  { font-size: .75rem; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .chip-new   { width: 6px; height: 6px; background: #22c55e; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 5px #22c55e; }
 
 /* ============================================================
