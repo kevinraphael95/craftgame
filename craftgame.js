@@ -299,7 +299,7 @@ function makeDraggable(el, cardId) {
       dragOverSidebar = bp ? cy > bp.top : false;
     } else {
       const sr = sidebar.getBoundingClientRect();
-      dragOverSidebar = cx < sr.right && cx > sr.left;
+      dragOverSidebar = cx >= sr.left && cx <= sr.right;
     }
     el.classList.toggle("drag-to-delete", dragOverSidebar);
   };
@@ -317,7 +317,7 @@ function makeDraggable(el, cardId) {
       if (bp && cy > bp.top) { flashRemove(cardId); return; }
     } else {
       const sr = sidebar.getBoundingClientRect();
-      if (cx < sr.right) { flashRemove(cardId); return; }
+      if (cx >= sr.left && cx <= sr.right) { flashRemove(cardId); return; }
     }
 
     tryFuseNear(cardId);
