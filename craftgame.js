@@ -691,6 +691,27 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("contextmenu", ev => ev.preventDefault());
 });
 
+
+// Resize sidebar
+const resizer = document.getElementById("sidebar-resizer");
+let resizerDragging = false;
+resizer.addEventListener("mousedown", ev => {
+  resizerDragging = true;
+  resizer.classList.add("dragging");
+  ev.preventDefault();
+});
+document.addEventListener("mousemove", ev => {
+  if (!resizerDragging) return;
+  const maxW = window.innerWidth * 0.38;
+  const newW = Math.min(Math.max(180, ev.clientX), maxW);
+  document.documentElement.style.setProperty("--sidebar-w", newW + "px");
+  resizer.style.left = newW + "px";
+});
+document.addEventListener("mouseup", () => {
+  resizerDragging = false;
+  resizer.classList.remove("dragging");
+});
+
 // ============================================================
 // RECTETTES
 // ============================================================
