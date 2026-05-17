@@ -597,15 +597,15 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
 
       .bp-list {
         display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
+        flex-direction: column;
+        flex-wrap: wrap;
         overflow-x: auto;
         overflow-y: hidden;
         gap: 5px;
         padding: 6px 8px;
-        height: 52px;
+        height: calc(4 * 38px + 3 * 5px + 12px);
         flex-shrink: 0;
-        align-items: center;
+        align-content: flex-start;
         scrollbar-width: none;
       }
       .bp-list::-webkit-scrollbar { display: none; }
@@ -616,7 +616,7 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
         gap: 5px;
         display: inline-flex;
         align-items: center;
-        height: 36px;
+        height: 38px;
         width: fit-content;
       }
       .bp-list .chip-emoji { font-size: 1rem; width: 20px; flex-shrink: 0; }
