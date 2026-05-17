@@ -423,6 +423,52 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
 #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 #toast.good { background: #16a34a; color: #fff; }
 
+
+/* ============================================================
+   MODAL RECETTES
+   ============================================================ */
+#modal-recipes {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.45); backdrop-filter: blur(6px);
+  z-index: 300; align-items: center; justify-content: center;
+}
+#modal-recipes.show { display: flex; }
+#modal-recipes-box {
+  background: var(--modal-bg); border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 20px;
+  width: 90%; max-width: 460px; max-height: 80vh;
+  display: flex; flex-direction: column; gap: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  animation: modal-pop .25s cubic-bezier(.34,1.56,.64,1);
+}
+.mr-header { display: flex; align-items: center; justify-content: space-between; }
+.mr-header h2 { font-size: 1rem; font-weight: 900; }
+.mr-header button {
+  background: none; border: 1.5px solid var(--border2); border-radius: 8px;
+  width: 28px; height: 28px; cursor: pointer; font-size: .9rem; color: var(--muted);
+}
+#modal-recipes-box > input {
+  border: 1.5px solid var(--border); border-radius: 9px;
+  padding: 7px 12px; font-family: var(--font); font-size: .8rem;
+  color: var(--text); background: var(--bg); outline: none; width: 100%;
+  flex-shrink: 0;
+}
+#recipe-list {
+  overflow-y: auto; display: flex; flex-direction: column; gap: 5px;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.recipe-item {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 10px; border-radius: 10px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  font-size: .78rem; font-weight: 700; flex-wrap: wrap;
+}
+.recipe-item .ri-result {
+  font-weight: 900; color: var(--accent); margin-left: auto;
+}
+
+
+
 /* ============================================================
    PARTICLES
    ============================================================ */
@@ -483,52 +529,53 @@ body.dark #modal-new-badge { background: linear-gradient(90deg, var(--accent), v
     max-height: 48vh;
   }
 
-  .bp-search {
-    display: flex; align-items: center; gap: 6px;
-    background: var(--bg);
-    border: 1.5px solid var(--border);
-    border-radius: 9px; padding: 5px 10px; margin: 6px 8px 4px;
-  }
-  .bp-search span { font-size: .7rem; opacity: .45; flex-shrink: 0; }
-  .bp-search input {
-    border: none; background: transparent;
-    font-family: var(--font); font-size: .78rem;
-    color: var(--text); outline: none; width: 100%;
-  }
-  .bp-search input::placeholder { color: var(--muted); }
-
-  .bp-filters {
-    display: flex; flex-wrap: nowrap;
-    overflow-x: auto; gap: 4px;
-    padding: 0 8px 4px; scrollbar-width: none;
-    flex-shrink: 0;
-  }
-  .bp-filters::-webkit-scrollbar { display: none; }
-  .bp-filters .filt { flex-shrink: 0; font-size: .55rem; padding: 3px 9px; }
-
-  .bp-list {
-    flex: 1; overflow-y: auto;
-    display: flex; flex-direction: row; flex-wrap: wrap;
-    gap: 4px; padding: 4px 8px;
-    align-content: flex-start;
-  }
-  .bp-list .el-chip { flex: 0 0 auto; padding: 5px 9px; border-radius: 20px; gap: 5px; }
-  .bp-list .chip-emoji { font-size: .85rem; width: 16px; }
-  .bp-list .chip-name  { font-size: .68rem; }
-
-  .bp-footer {
-    display: flex; gap: 5px; padding: 5px 8px;
-    border-top: 1px solid var(--border); flex-shrink: 0;
-  }
-  .bp-footer button {
-    flex: 1; padding: 6px 4px;
-    border: 1.5px solid var(--border2); border-radius: 9px;
-    background: transparent; font-family: var(--font);
-    font-size: .62rem; font-weight: 800; color: var(--muted);
-    cursor: pointer; text-transform: uppercase; letter-spacing: .04em;
-  }
-  .bp-footer button:first-child:hover { border-color: #f97316; color: #f97316; }
-  .bp-footer button:last-child:hover  { border-color: #ef4444; color: #ef4444; }
+  .bp-toprow {
+      display: flex; align-items: center; gap: 5px;
+      padding: 6px 8px; border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .bp-search {
+      flex: 1; display: flex; align-items: center; gap: 6px;
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: 9px; padding: 5px 10px;
+    }
+    .bp-search span { font-size: .7rem; opacity: .45; flex-shrink: 0; }
+    .bp-search input {
+      border: none; background: transparent;
+      font-family: var(--font); font-size: .78rem;
+      color: var(--text); outline: none; width: 100%;
+    }
+    .bp-search input::placeholder { color: var(--muted); }
+    .bp-icon-btn {
+      flex-shrink: 0; width: 32px; height: 32px;
+      border: 1.5px solid var(--border2); border-radius: 9px;
+      background: transparent; font-size: .9rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+    }
+    .bp-icon-btn:active { background: var(--border); }
+    .bp-filters {
+      display: flex; flex-wrap: nowrap; overflow-x: auto;
+      gap: 4px; padding: 4px 8px;
+      scrollbar-width: none; flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .bp-filters::-webkit-scrollbar { display: none; }
+    .bp-filters .filt { flex-shrink: 0; font-size: .6rem; padding: 4px 11px; }
+    .bp-list {
+      flex: 1; overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 4px; padding: 5px 8px;
+      align-content: start;
+    }
+    .bp-list .el-chip {
+      padding: 6px 10px; border-radius: 20px; gap: 5px;
+      display: flex; align-items: center; overflow: hidden;
+    }
+  .bp-list .chip-emoji { font-size: .9rem; width: 18px; flex-shrink: 0; }
+  .bp-list .chip-name { font-size: .72rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bp-list .chip-info { overflow: hidden; min-width: 0; }
 
   .canvas-card { padding: 8px 11px; min-width: 70px; }
   .cc-name { font-size: .68rem; }
