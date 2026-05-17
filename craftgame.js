@@ -278,7 +278,7 @@ function makeDraggable(el, cardId) {
     const c   = getCard();
     startLeft = c ? c.x : parseInt(el.style.left) || 0;
     startTop  = c ? c.y : parseInt(el.style.top)  || 0;
-    el.style.zIndex = 1000;
+    const maxZ = Math.max(0, ...cards.map(c => parseInt(c.el.style.zIndex) || 0));
     el.style.zIndex = maxZ + 1;
     el.classList.add("dragging");
   };
