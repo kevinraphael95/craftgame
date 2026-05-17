@@ -786,3 +786,31 @@ function renderRecipes() {
     list.appendChild(div);
   });
 }
+
+
+let sideRight = false;
+function toggleSide() {
+  sideRight = !sideRight;
+  const sidebar = document.getElementById("sidebar");
+  const canvas = document.getElementById("canvas");
+  const resizer = document.getElementById("sidebar-resizer");
+  if (sideRight) {
+    sidebar.style.left = "auto";
+    sidebar.style.right = "0";
+    sidebar.style.borderRight = "none";
+    sidebar.style.borderLeft = "1px solid var(--border)";
+    canvas.style.left = "0";
+    canvas.style.right = "var(--sidebar-w)";
+    resizer.style.left = "auto";
+    resizer.style.right = "var(--sidebar-w)";
+  } else {
+    sidebar.style.left = "0";
+    sidebar.style.right = "auto";
+    sidebar.style.borderLeft = "none";
+    sidebar.style.borderRight = "1px solid var(--border)";
+    canvas.style.left = "var(--sidebar-w)";
+    canvas.style.right = "0";
+    resizer.style.left = "var(--sidebar-w)";
+    resizer.style.right = "auto";
+  }
+}
