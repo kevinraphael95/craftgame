@@ -7,7 +7,6 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <!-- Fond quantique -->
 <div id="quantum-bg"></div>
 
@@ -17,12 +16,12 @@
       <span style="font-size:2rem">⚗️</span>
       <div>
         <strong>CRAFT GAME</strong>
-                <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
-              </div>
-              <div class="logo-right">
-                <button id="theme-btn">🌙</button>
-              </div>
-            </div>
+        <em>CRAFTER DES TRUCS AVEC DES TRUCS</em>
+      </div>
+      <div class="logo-right">
+        <button id="theme-btn">🌙</button>
+      </div>
+    </div>
     <div class="sb-stats">
       <b id="nd">11</b> / <b id="nt">?</b> éléments &nbsp;·&nbsp; <b id="fc">0</b> fusions
     </div>
@@ -45,12 +44,11 @@
       <button class="filt"    data-f="cosmic"    onclick="setFilt(this)">Cosmique</button>
     </div>
   </div>
-
   <div id="el-list"></div>
-
   <div class="sb-footer">
     <button class="clear-btn" onclick="clearCanvas()">⊘ Vider</button>
-    <button onclick="resetGame()">↺ Réinitialiser</button>
+    <button onclick="resetGame()">↺ Réinit.</button>
+    <button onclick="openRecipes()">📖 Recettes</button>
   </div>
 </aside>
 
@@ -82,10 +80,19 @@
   </div>
 </div>
 
-<div id="toast"></div>
+<!-- Modal recettes -->
+<div id="modal-recipes" onclick="closeRecipes()">
+  <div id="modal-recipes-box" onclick="event.stopPropagation()">
+    <div class="mr-header">
+      <h2>📖 Recettes découvertes</h2>
+      <button onclick="closeRecipes()">✕</button>
+    </div>
+    <input id="recipe-search" type="text" placeholder="Rechercher une recette..." oninput="renderRecipes()">
+    <div id="recipe-list"></div>
+  </div>
+</div>
 
-<script src="data.js"></script>
-<script src="craftgame.js"></script>
+<!-- Bottom panel mobile -->
 <div id="bottom-panel">
   <div class="bp-toprow">
     <div class="bp-search">
@@ -112,16 +119,8 @@
   <div class="bp-list" id="el-list-mobile"></div>
 </div>
 
-<!-- Modal recettes -->
-<div id="modal-recipes" onclick="closeRecipes()">
-  <div id="modal-recipes-box" onclick="event.stopPropagation()">
-    <div class="mr-header">
-      <h2>📖 Recettes découvertes</h2>
-      <button onclick="closeRecipes()">✕</button>
-    </div>
-    <input id="recipe-search" type="text" placeholder="Rechercher une recette..." oninput="renderRecipes()">
-    <div id="recipe-list"></div>
-  </div>
-</div>
+<div id="toast"></div>
+<script src="data.js"></script>
+<script src="craftgame.js"></script>
 </body>
 </html>
