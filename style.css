@@ -189,6 +189,9 @@ body.dark .qfluc {
   transition: all .14s;
 }
 #theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+#side-btn { background:none; border:1.5px solid var(--border2); border-radius:8px; width:30px; height:30px; font-size:.95rem; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--muted); transition:all .14s; margin-right:4px; }
+#side-btn:hover { border-color:var(--accent); color:var(--accent); }
+@media (max-width:680px) { #side-btn { display:none; } }
 
 .sb-stats { display: none; }
 
