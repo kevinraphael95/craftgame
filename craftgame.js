@@ -510,12 +510,21 @@ function initCanvasDrop() {
   const area = canvasArea();
   area.addEventListener("dragover", ev => {
     ev.preventDefault();
+    const name = ev.dataTransfer.getData("spawn");
     const rect = area.getBoundingClientRect();
     const x = ev.clientX - rect.left - 55;
     const y = ev.clientY - rect.top - 18;
-    cards.forEach(c => {
-      const d = Math.sqrt((c.x - x)**2 + (c.y - y)**2);
-      c.el.classList.toggle("near", d < FUSE_DIST);
+  
+    const closeCards = cards.filter(c => Math.sqrt((c.x-x)**2 + (c.y-y)**2) < FUSE_DIST);
+  
+    cards.forEach(c => c.el.classList.remove("near", "near-fail", "near-3"));
+  
+    closeCards.forEach(c => {
+      const can2 = findRecipe2(name, c.name) || isAntiPair(name, c.name);
+      const can3 = !can2 && closeCards.some(other => other.id !== c.id && findRecipe3(name, c.name, other.name));
+      if (can2) c.el.classList.add("near");         // vert = fusion à 2
+      else if (can3) c.el.classList.add("near-3");  // bleu = fusion à 3
+      else c.el.classList.add("near-fail");          // orange = pas de fusion
     });
   });
   area.addEventListener("dragleave", () => clearHighlights());
