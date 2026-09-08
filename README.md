@@ -1,6 +1,7 @@
 ## Craft Game
 
 Une application web interactive d'association d'éléments guidée par la physique des particules, la chimie et l'astrophysique. Combine des composants fondamentaux (quarks, leptons, bosons) pour découvrir la matière et former des éléments chimiques.
+**Jouer en ligne** : [kevinraphael95.github.io/craftgame/index.html](https://www.google.com/search?q=https://kevinraphael95.github.io/craftgame/index.html)
 
 ---
 
@@ -25,14 +26,6 @@ Une application web interactive d'association d'éléments guidée par la physiq
 * `style.css` : Styles CSS3, gestion du mode sombre, variables de thèmes et animations d'annihilation.
 * `craftgame.js` : Moteur de jeu en JavaScript (gestion du canvas, draggables, détection de collisions, sauvegardes local storage).
 * `data.js` : Base de données des éléments, catégories et définitions des réactions.
-
----
-
-### Installation et Utilisation
-
-1. Télécharge ou clone l'ensemble des fichiers dans un même répertoire.
-2. Ouvre le fichier `index.html` dans un navigateur web moderne.
-3. **Jouer en ligne** : [kevinraphael95.github.io/craftgame/index.html](https://www.google.com/search?q=https://kevinraphael95.github.io/craftgame/index.html)
 
 ---
 
