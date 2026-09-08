@@ -1,6 +1,6 @@
-## Craft Game (Infinite Craft Physique Quantique & Cosmologie)
+## Craft Game
 
-Une application web interactive d'association d'éléments guidée par la physique des particules, la chimie et l'astrophysique. Combine des composants fondamentaux (quarks, leptons, bosons) pour découvrir la matière, former des éléments chimiques et bâtir des structures cosmiques.
+Une application web interactive d'association d'éléments guidée par la physique des particules, la chimie et l'astrophysique. Combine des composants fondamentaux (quarks, leptons, bosons) pour découvrir la matière et former des éléments chimiques.
 
 ---
 
