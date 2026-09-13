@@ -2,7 +2,7 @@
 
 Une application web interactive d'association d'éléments guidée par la physique des particules, la chimie et l'astrophysique. Combine des composants fondamentaux (quarks, leptons, bosons) pour découvrir la matière et former des éléments chimiques.
 
-**Jouer en ligne** : https://www.google.com/search?q=https://kevinraphael95.github.io/craftgame/index.html
+**Jouer en ligne** : https://kevinraphael95.github.io/craftgame/index.html
 
 ---
 
